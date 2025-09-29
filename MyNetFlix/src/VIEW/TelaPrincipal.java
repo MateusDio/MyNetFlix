@@ -28,8 +28,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         Desktop = new javax.swing.JDesktopPane();
-        txtBnv = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        txtBnv = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         subMenuAdcFilmes = new javax.swing.JMenuItem();
@@ -40,28 +40,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtBnv.setText("Bem vindo, usuário!");
-
-        Desktop.setLayer(txtBnv, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         javax.swing.GroupLayout DesktopLayout = new javax.swing.GroupLayout(Desktop);
         Desktop.setLayout(DesktopLayout);
         DesktopLayout.setHorizontalGroup(
             DesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DesktopLayout.createSequentialGroup()
-                .addGap(209, 209, 209)
-                .addComponent(txtBnv)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 562, Short.MAX_VALUE)
         );
         DesktopLayout.setVerticalGroup(
             DesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DesktopLayout.createSequentialGroup()
-                .addComponent(txtBnv)
-                .addGap(0, 447, Short.MAX_VALUE))
+            .addGap(0, 459, Short.MAX_VALUE)
         );
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("MyNetFlix");
+
+        txtBnv.setText("Bem vindo, usuário!");
 
         jMenu1.setText("Funções");
 
@@ -71,6 +64,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         subMenuCatálogo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
         subMenuCatálogo.setText("Catálogo");
+        subMenuCatálogo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                subMenuCatálogoMousePressed(evt);
+            }
+        });
+        subMenuCatálogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuCatálogoActionPerformed(evt);
+            }
+        });
         jMenu1.add(subMenuCatálogo);
 
         jMenuBar1.add(jMenu1);
@@ -92,22 +95,41 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Desktop)
             .addGroup(layout.createSequentialGroup()
-                .addGap(207, 207, 207)
-                .addComponent(jLabel1)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(Desktop)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(228, 228, 228)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtBnv)
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addComponent(txtBnv)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(Desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void subMenuCatálogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCatálogoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subMenuCatálogoActionPerformed
+
+    private void subMenuCatálogoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuCatálogoMousePressed
+        Catalogo cata = new Catalogo();
+        cata.setVisible(true);
+        Desktop.add(cata);
+        System.out.println("asdsaasdas");
+    }//GEN-LAST:event_subMenuCatálogoMousePressed
 
     /**
      * @param args the command line arguments
