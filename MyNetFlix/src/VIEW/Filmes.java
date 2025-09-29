@@ -5,17 +5,26 @@
  */
 package VIEW;
 
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author aluno.saolucas
  */
 public class Filmes extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Filmes
-     */
+    
     public Filmes() {
         initComponents();
+        
+         DefaultComboBoxModel<String> idade = new DefaultComboBoxModel<>();
+        idade.addElement("Livre");
+        idade.addElement("12 Anos");
+        idade.addElement("14 Anos");
+        idade.addElement("16 Anos");
+        idade.addElement("18 Anos");
+        
+        cboFaixaEtaria.setModel(idade);
     }
 
     /**
@@ -34,13 +43,13 @@ public class Filmes extends javax.swing.JFrame {
         txtPlataforma = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtFaixa = new javax.swing.JTextField();
-        btnAdd = new javax.swing.JLabel();
         btnListar = new javax.swing.JLabel();
         btnRemover = new javax.swing.JLabel();
         btnEditar = new javax.swing.JLabel();
         btnLimpar = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JLabel();
+        cboFaixaEtaria = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,35 +67,28 @@ public class Filmes extends javax.swing.JFrame {
 
         jLabel6.setText("Faixa Etária:");
 
-        btnAdd.setText("Adicionar");
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnAddMousePressed(evt);
-            }
-        });
-
-        btnListar.setText("Listar");
+        btnListar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca listar.png"))); // NOI18N
         btnListar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnListarMousePressed(evt);
             }
         });
 
-        btnRemover.setText("Remover");
+        btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca remov.png"))); // NOI18N
         btnRemover.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnRemoverMousePressed(evt);
             }
         });
 
-        btnEditar.setText("Editar");
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca editar.png"))); // NOI18N
         btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnEditarMousePressed(evt);
             }
         });
 
-        btnLimpar.setText("Limpar");
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca limpar.png"))); // NOI18N
         btnLimpar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnLimparMousePressed(evt);
@@ -95,41 +97,43 @@ public class Filmes extends javax.swing.JFrame {
 
         jLabel4.setText("Bem-vindo à página de registro de filmes");
 
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca add.png"))); // NOI18N
+
+        cboFaixaEtaria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(btnAdd)
-                        .addGap(70, 70, 70)
-                        .addComponent(btnListar)
-                        .addGap(67, 67, 67)
-                        .addComponent(btnRemover)
-                        .addGap(50, 50, 50)
-                        .addComponent(btnEditar)
-                        .addGap(44, 44, 44)
-                        .addComponent(btnLimpar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTitulo)
-                            .addComponent(txtGenero)
-                            .addComponent(txtPlataforma)
-                            .addComponent(txtFaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(117, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 228, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(211, 211, 211))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnListar)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnRemover)
+                        .addGap(35, 35, 35)
+                        .addComponent(btnEditar)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnLimpar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                        .addComponent(txtGenero)
+                        .addComponent(txtPlataforma))
+                    .addComponent(cboFaixaEtaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(184, 184, 184))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,15 +155,15 @@ public class Filmes extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtFaixa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                    .addComponent(cboFaixaEtaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
                     .addComponent(btnListar)
                     .addComponent(btnRemover)
                     .addComponent(btnEditar)
+                    .addComponent(btnAdd)
                     .addComponent(btnLimpar))
-                .addGap(57, 57, 57))
+                .addGap(63, 63, 63))
         );
 
         pack();
@@ -168,10 +172,6 @@ public class Filmes extends javax.swing.JFrame {
     private void txtPlataformaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPlataformaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPlataformaActionPerformed
-
-    private void btnAddMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMousePressed
-        
-    }//GEN-LAST:event_btnAddMousePressed
 
     private void btnListarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnListarMousePressed
         // TODO add your handling code here:
@@ -225,17 +225,17 @@ public class Filmes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel btnAdd;
+    public static javax.swing.JLabel btnAdd;
     private javax.swing.JLabel btnEditar;
     private javax.swing.JLabel btnLimpar;
     private javax.swing.JLabel btnListar;
     private javax.swing.JLabel btnRemover;
+    private javax.swing.JComboBox<String> cboFaixaEtaria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField txtFaixa;
     private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtPlataforma;
     private javax.swing.JTextField txtTitulo;
