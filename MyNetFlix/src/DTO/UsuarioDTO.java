@@ -5,6 +5,8 @@ package DTO;
 public class UsuarioDTO {
     private int id_usuario,nota_usuario;
     private String nome_usuario,status_usuario,login_usuario,senha_usuario;
+    
+    
 
     public int getId_usuario() {
         return id_usuario;
