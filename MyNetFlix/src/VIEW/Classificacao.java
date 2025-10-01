@@ -79,12 +79,6 @@ public class Classificacao extends javax.swing.JFrame {
             }
         });
 
-        btnAddLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca add.png"))); // NOI18N
-
-        btnLimparLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca limpar.png"))); // NOI18N
-
-        btnEditarLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pipoca editar.png"))); // NOI18N
-
         menuFuncoes.setText("Funções");
 
         subAddFilme.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
@@ -166,10 +160,11 @@ public class Classificacao extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddLogin)
-                    .addComponent(btnLimparLogin)
-                    .addComponent(btnEditarLogin))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEditarLogin, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAddLogin)
+                        .addComponent(btnLimparLogin)))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
 
