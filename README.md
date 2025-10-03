@@ -1,3 +1,5 @@
+**Script banco**
+
 create database FilmesBanco;
 use FilmesBanco;
 
