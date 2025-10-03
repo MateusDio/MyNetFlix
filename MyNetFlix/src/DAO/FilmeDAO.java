@@ -133,9 +133,6 @@ public class FilmeDAO {
     }
     
     
-    
-    
-    
      public void listarFilmesAssistidos(UsuarioDTO objUsuarioDTO) {
         String sql = "SELECT * FROM tb_Usuario WHERE status_usuario IN ('Assistido', 'Assistindo') AND id_usuario = ?";
         conexao = ConexaoDAO.conector();
@@ -165,60 +162,7 @@ public class FilmeDAO {
             }
         }
     }
- public void listar() {
-        String sql = "SELECT tituloFilme FROM Catalogo_Filmes";
-        conexao = ConexaoDAO.conector();
+     
+     
 
-        try {
-            pst = conexao.prepareStatement(sql);
-            rs = pst.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-            model.setNumRows(0);
-
-            while (rs.next()) {
-
-                String Titulo = rs.getString("tituloFilme");
-
-                model.addRow(new Object[]{Titulo});
-
-            }
-            conexao.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Método Listar " + e.getMessage());
-        }
-
-    }
-
-    public void listarGenero(Catalogo c1) {
-        String sql = "SELECT * FROM Catalogo_Filmes WHERE generoFilme = ?";
-        conexao = ConexaoDAO.conector();
-
-        try {
-            pst = conexao.prepareStatement(sql);
-            rs = pst.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-            model.setNumRows(0);
-
-            while (rs.next()) {
-                PreparedStatement stmt = conexao.prepareStatement(sql);
-                stmt.setString(1, (String) c1.FiltroGenero.getSelectedItem() );
-                model.addRow(new Object[]{stmt});
-
-            }
-            conexao.close();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Método Listar Genero " + e.getMessage());
-        }
-
-    }
-
-    public void listarFaixaEtaria() {
-
-    }
-
-    public void listarPlataforma() {
-
-    }
 }
-

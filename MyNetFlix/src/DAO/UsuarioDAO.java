@@ -88,7 +88,7 @@ public class UsuarioDAO {
 
     public void limpar() {
 
-        DefaultTableModel modelo = (DefaultTableModel) Cadastrar.TbUsuarios.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) Cadastrar.TbCadastros.getModel();
 
         modelo.setRowCount(0);
 
@@ -182,7 +182,7 @@ public class UsuarioDAO {
         try{
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) Cadastrar.TbUsuarios.getModel();
+            DefaultTableModel model = (DefaultTableModel) Cadastrar.TbCadastros.getModel();
             model.setNumRows(0);
             while(rs.next()){
                 int id = rs.getInt("id_usuario");
