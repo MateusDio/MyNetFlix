@@ -13,9 +13,9 @@ import javax.swing.table.TableColumn;
 
 public class Catalogo extends javax.swing.JInternalFrame {
 
-    List<String> faixaEtaria = Arrays.asList();
-    List<String> generos = Arrays.asList();
-    List<String> plataformas = Arrays.asList();
+    public List<String> faixaEtaria = Arrays.asList();
+    public List<String> generos = Arrays.asList();
+    public List<String> plataformas = Arrays.asList();
     FilmeDTO f2 = new FilmeDTO();
     FilmeDAO f1 = new FilmeDAO();
 
@@ -36,7 +36,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
         }
 
         faixaEtaria = Arrays.asList(
-                "Vazio", "Livre", "12 Anos", "14 Anos", "16 Anos", "18 Anos"
+                "Vazio", "Livre", "12 Anos", "14 Anos", "16 Anos", "18 Anos", "Outro"
         );
 
         FiltroFaixaEtaria.removeAllItems();
@@ -44,7 +44,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
             FiltroFaixaEtaria.addItem(faixa);
         }
 
-         plataformas = Arrays.asList(
+        plataformas = Arrays.asList(
                 "Vazio", "Netflix", "Prime Video", "HBO Max", "Disney+", "Star+",
                 "Globoplay", "Paramount+", "Apple TV+", "Crunchyroll",
                 "YouTube", "Claro TV+", "Telecine Play", "Now", "MUBI",
@@ -95,6 +95,11 @@ public class Catalogo extends javax.swing.JInternalFrame {
         jLabel5.setText("Plataforma:");
 
         FiltroPlataforma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        FiltroPlataforma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FiltroPlataformaActionPerformed(evt);
+            }
+        });
 
         TbFilmes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,10 +120,15 @@ public class Catalogo extends javax.swing.JInternalFrame {
                 return types [columnIndex];
             }
         });
+        TbFilmes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TbFilmesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(TbFilmes);
         TableColumn txtTituloFilme = TbFilmes.getColumnModel().getColumn(0);
 
-        txtTituloFilme.setHeaderValue("tituloFilme");
+        txtTituloFilme.setHeaderValue("Titulo");
 
         FiltroGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         FiltroGenero.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +186,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,12 +226,28 @@ public class Catalogo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_CatalogoMouseClicked
 
     private void FiltroFaixaEtariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltroFaixaEtariaActionPerformed
-        // TODO add your handling code here:
+        f1.listarFilmesFiltrados(this);
     }//GEN-LAST:event_FiltroFaixaEtariaActionPerformed
 
     private void FiltroGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltroGeneroActionPerformed
-      
+        f1.listarFilmesFiltrados(this);
     }//GEN-LAST:event_FiltroGeneroActionPerformed
+
+    private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
+                                       
+    
+    Login novaTela = new Login();
+    
+  
+    novaTela.setVisible(true);
+
+
+
+    }//GEN-LAST:event_TbFilmesMouseClicked
+
+    private void FiltroPlataformaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltroPlataformaActionPerformed
+        f1.listarFilmesFiltrados(this);
+    }//GEN-LAST:event_FiltroPlataformaActionPerformed
 
     /**
      * @param args the command line arguments
