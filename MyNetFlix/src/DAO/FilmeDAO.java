@@ -162,7 +162,135 @@ public class FilmeDAO {
             }
         }
     }
-     
-     
 
+
+     public void listar() {
+        String sql = "SELECT tituloFilme FROM Catalogo_Filmes";
+        conexao = ConexaoDAO.conector();
+
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
+            model.setNumRows(0);
+
+            while (rs.next()) {
+
+                String Titulo = rs.getString("tituloFilme");
+
+                model.addRow(new Object[]{Titulo});
+
+            }
+            conexao.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Método Listar " + e.getMessage());
+        }
+
+    }
+    public void listarFilmesFiltrados(Catalogo c1) {
+      
+
+        Object generoObj = c1.FiltroGenero.getSelectedItem();
+        Object faixaEtariaObj = c1.FiltroFaixaEtaria.getSelectedItem();
+        Object plataformaObj = c1.FiltroPlataforma.getSelectedItem();
+
+        String genero = (generoObj != null) ? generoObj.toString().trim() : "Vazio";
+        String faixaEtaria = (faixaEtariaObj != null) ? faixaEtariaObj.toString().trim() : "Vazio";
+        String plataforma = (plataformaObj != null) ? plataformaObj.toString().trim() : "Vazio";
+
+        StringBuilder sql = new StringBuilder("SELECT tituloFilme FROM Catalogo_Filmes WHERE 1=1");
+        List<String> parametros = new ArrayList<>();
+
+      
+        if (!genero.equalsIgnoreCase("Vazio")) {
+            if (genero.equalsIgnoreCase("Outro")) {
+                List<String> generosConhecidos = c1.generos;
+                if (generosConhecidos != null && !generosConhecidos.isEmpty()) {
+                    sql.append(" AND generoFilme NOT IN (");
+                    for (int i = 0; i < generosConhecidos.size(); i++) {
+                        sql.append("?");
+                        if (i < generosConhecidos.size() - 1) {
+                            sql.append(", ");
+                        }
+                    }
+                    sql.append(")");
+                    parametros.addAll(generosConhecidos);
+                }
+            } else {
+                sql.append(" AND generoFilme = ?");
+                parametros.add(genero);
+            }
+        }
+
+        if (!faixaEtaria.equalsIgnoreCase("Vazio")) {
+            if (faixaEtaria.equalsIgnoreCase("Outro")) {
+                List<String> faixasConhecidas = c1.faixaEtaria;
+                if (faixasConhecidas != null && !faixasConhecidas.isEmpty()) {
+                    sql.append(" AND faixaEtaria NOT IN (");
+                    for (int i = 0; i < faixasConhecidas.size(); i++) {
+                        sql.append("?");
+                        if (i < faixasConhecidas.size() - 1) {
+                            sql.append(", ");
+                        }
+                    }
+                    sql.append(")");
+                    parametros.addAll(faixasConhecidas);
+                }
+            } else {
+                sql.append(" AND faixaEtaria = ?");
+                parametros.add(faixaEtaria);
+            }
+        }
+
+       
+        if (!plataforma.equalsIgnoreCase("Vazio")) {
+            if (plataforma.equalsIgnoreCase("Outro")) {
+                List<String> plataformasConhecidas = c1.plataformas;
+                if (plataformasConhecidas != null && !plataformasConhecidas.isEmpty()) {
+                    sql.append(" AND plataforma NOT IN (");
+                    for (int i = 0; i < plataformasConhecidas.size(); i++) {
+                        sql.append("?");
+                        if (i < plataformasConhecidas.size() - 1) {
+                            sql.append(", ");
+                        }
+                    }
+                    sql.append(")");
+                    parametros.addAll(plataformasConhecidas);
+                }
+            } else {
+                sql.append(" AND plataforma = ?");
+                parametros.add(plataforma);
+            }
+        }
+
+        conexao = ConexaoDAO.conector();
+
+        try {
+            pst = conexao.prepareStatement(sql.toString());
+
+            for (int i = 0; i < parametros.size(); i++) {
+                pst.setString(i + 1, parametros.get(i));
+            }
+
+            rs = pst.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
+            model.setNumRows(0);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString("tituloFilme")});
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar filmes com filtros: " + e.getMessage());
+        } finally {
+            try {
+                if (conexao != null) {
+                    conexao.close();
+                }
+            } catch (Exception e) {
+            }
+        }
+    }
 }
+
