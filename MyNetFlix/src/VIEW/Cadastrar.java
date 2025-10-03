@@ -9,6 +9,8 @@ import DAO.ConexaoDAO;
 import java.sql.Connection;
 import DAO.CadastrarDAO;
 import DTO.CadastrarDTO;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,7 +20,7 @@ public class Cadastrar extends javax.swing.JFrame {
 
     CadastrarDAO c1 = new CadastrarDAO();
     CadastrarDTO c2 = new CadastrarDTO();
-    
+
     Connection conexao = null;
 
     ConexaoDAO dao = new ConexaoDAO();
@@ -51,9 +53,13 @@ public class Cadastrar extends javax.swing.JFrame {
         txtDataCadastro = new javax.swing.JTextField();
         btnCadastrarUsu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TbUsuarios = new javax.swing.JTable();
+        TbCadastros = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         txtIdCadastro = new javax.swing.JTextField();
+        btnListar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,58 +73,81 @@ public class Cadastrar extends javax.swing.JFrame {
 
         jLabel6.setText("Confirme a senha:");
 
-        txtSenha.setText("jPasswordField1");
-
-        txtConfirSenha.setText("jPasswordField2");
-
         txtNomeCadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNomeCadastroActionPerformed(evt);
             }
         });
 
-        btnCadastrarUsu.setText("Clique aqui para cadastrar- se!");
+        btnCadastrarUsu.setText("Cadastrar");
         btnCadastrarUsu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastrarUsuActionPerformed(evt);
             }
         });
 
-        TbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        TbCadastros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nome completo:", "Data de nascimento:", "Senha:", "Confirmação de senha:"
+                "ID:", "Nome:", "Data de Nascimento:", "Senha:", "Confirmação:"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(TbUsuarios);
+        jScrollPane1.setViewportView(TbCadastros);
 
         jLabel4.setText("Id cadastro:");
+
+        btnListar.setText("Listar");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
+
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnCadastrarUsu)
-                .addGap(194, 194, 194))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
+                        .addGap(162, 162, 162)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -136,21 +165,30 @@ public class Cadastrar extends javax.swing.JFrame {
                                 .addGap(38, 38, 38)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtIdCadastro))))
+                                .addComponent(txtIdCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 91, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                        .addComponent(btnCadastrarUsu)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnListar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRemover)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(62, 62, 62))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtIdCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -170,11 +208,16 @@ public class Cadastrar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtConfirSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCadastrarUsu)
+                    .addComponent(btnListar)
+                    .addComponent(btnRemover)
+                    .addComponent(btnEditar)
+                    .addComponent(btnLimpar))
                 .addGap(18, 18, 18)
-                .addComponent(btnCadastrarUsu)
-                .addGap(29, 29, 29)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
@@ -191,12 +234,48 @@ public class Cadastrar extends javax.swing.JFrame {
         DTOedit.setDataNascimento(txtDataCadastro.getText());
         DTOedit.setSenha(txtSenha.getText());
         DTOedit.setConfirSenha(txtConfirSenha.getText());
-        
-        c1.cadastrar(c2);
-        
 
+        CadastrarDAO DAOedit = new CadastrarDAO();
+        DAOedit.cadastrar(DTOedit);
 
     }//GEN-LAST:event_btnCadastrarUsuActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        c1.listar();
+
+        DefaultTableModel model = (DefaultTableModel) TbCadastros.getModel();
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "A tabela está vazia.");
+        }
+
+    }//GEN-LAST:event_btnListarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        CadastrarDTO DTOedit = new CadastrarDTO();
+        DTOedit.setIdCadastro(Integer.parseInt(txtIdCadastro.getText()));
+        DTOedit.setNome(txtNomeCadastro.getText());
+        DTOedit.setDataNascimento(txtDataCadastro.getText());
+        DTOedit.setConfirSenha(txtConfirSenha.getText());
+
+        CadastrarDAO DAOedit = new CadastrarDAO();
+        DAOedit.deletar(DTOedit);
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        CadastrarDTO DTOedit = new CadastrarDTO();
+        DTOedit.setIdCadastro(Integer.parseInt(txtIdCadastro.getText()));
+        DTOedit.setNome(txtNomeCadastro.getText());
+        DTOedit.setDataNascimento(txtDataCadastro.getText());
+        DTOedit.setSenha(txtSenha.getText());
+        DTOedit.setConfirSenha(txtConfirSenha.getText());
+
+        CadastrarDAO DAOedit = new CadastrarDAO();
+        DAOedit.editar(DTOedit);
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        c1.limpar();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,8 +313,12 @@ public class Cadastrar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JTable TbUsuarios;
+    public static javax.swing.JTable TbCadastros;
     private javax.swing.JButton btnCadastrarUsu;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnListar;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel jLabel3;
