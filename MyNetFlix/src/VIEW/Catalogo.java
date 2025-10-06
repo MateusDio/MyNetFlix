@@ -7,8 +7,11 @@ package VIEW;
 
 import DAO.FilmeDAO;
 import DTO.FilmeDTO;
+import DTO.UsuarioDTO;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 public class Catalogo extends javax.swing.JInternalFrame {
@@ -16,8 +19,10 @@ public class Catalogo extends javax.swing.JInternalFrame {
     public List<String> faixaEtaria = Arrays.asList();
     public List<String> generos = Arrays.asList();
     public List<String> plataformas = Arrays.asList();
+    UsuarioDTO u1 = new UsuarioDTO();
     FilmeDTO f2 = new FilmeDTO();
     FilmeDAO f1 = new FilmeDAO();
+    Classificacao c2 = new Classificacao();
 
     public Catalogo() {
 
@@ -36,7 +41,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
         }
 
         faixaEtaria = Arrays.asList(
-                "Vazio", "Livre", "12 Anos", "14 Anos", "16 Anos", "18 Anos", "Outro"
+                "Vazio", "Livre", "12 Anos", "14 Anos", "16 Anos", "18 Anos"
         );
 
         FiltroFaixaEtaria.removeAllItems();
@@ -103,17 +108,17 @@ public class Catalogo extends javax.swing.JInternalFrame {
 
         TbFilmes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Titulo"
+                "Titulo", "Gênero", "Plataforma", "Faixa Etária", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -219,6 +224,11 @@ public class Catalogo extends javax.swing.JInternalFrame {
 
     private void HistoricoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HistoricoMouseClicked
         System.out.println("Histórico aberto!");
+        FiltroPlataforma.setSelectedItem("Vazio");
+        FiltroFaixaEtaria.setSelectedItem("Vazio");
+        FiltroGenero.setSelectedItem("Vazio");
+        f1.listarFilmesAssistidos(u1);
+        
     }//GEN-LAST:event_HistoricoMouseClicked
 
     private void CatalogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CatalogoMouseClicked
@@ -233,21 +243,27 @@ public class Catalogo extends javax.swing.JInternalFrame {
         f1.listarFilmesFiltrados(this);
     }//GEN-LAST:event_FiltroGeneroActionPerformed
 
-    private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
-                                       
-    
-    Login novaTela = new Login();
-    
-  
-    novaTela.setVisible(true);
-
-
-
-    }//GEN-LAST:event_TbFilmesMouseClicked
-
     private void FiltroPlataformaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltroPlataformaActionPerformed
         f1.listarFilmesFiltrados(this);
     }//GEN-LAST:event_FiltroPlataformaActionPerformed
+
+    private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
+        try {
+            int linha = TbFilmes.getSelectedRow();
+
+            if (linha != -1) {
+                String nome = TbFilmes.getValueAt(linha, 0).toString();
+
+                
+                c2.setNomeDoFilme(nome);
+                c2.setVisible(true);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();  // para ajudar no debug no console
+        }
+
+    }//GEN-LAST:event_TbFilmesMouseClicked
 
     /**
      * @param args the command line arguments

@@ -5,7 +5,11 @@
  */
 package VIEW;
 
-import javax.swing.ButtonGroup;
+import DAO.FilmeDAO;
+import DTO.FilmeDTO;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.JFrame;
 
 /**
  *
@@ -13,22 +17,35 @@ import javax.swing.ButtonGroup;
  */
 public class Classificacao extends javax.swing.JFrame {
 
-    /**
-     * Creates new form UsuarioLogin
-     */
+  public List<String> status = Arrays.asList();
+    FilmeDTO f2 = new FilmeDTO();
+    FilmeDAO f1 = new FilmeDAO();
+
     public Classificacao() {
         initComponents();
 
-        buttonGroup1.add(radioBtnLista);
-        buttonGroup1.add(radioBtnAssistindo);
-        buttonGroup1.add(radioBtnAssistido);
+        status = Arrays.asList(
+                "Vazio", "Assistido", "Assistindo", "Não visto"
+        );
 
+        statusFilme.removeAllItems();
+        for (String faixa : status) {
+            statusFilme.addItem(faixa);
+        }
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        radioBtnLista.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-               
-            }
-        });
+       
+     
+
+      
+    }
+    
+    
+    
+
+    // Método que você vai usar para receber o nome do filme
+    public void setNomeDoFilme(String nome) {
+        txtNomeDoFilme.setText(nome);
     }
 
     /**
@@ -43,14 +60,15 @@ public class Classificacao extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        radioBtnLista = new javax.swing.JRadioButton();
-        radioBtnAssistindo = new javax.swing.JRadioButton();
-        radioBtnAssistido = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
         txtNota = new javax.swing.JTextField();
         btnAddLogin = new javax.swing.JLabel();
         btnLimparLogin = new javax.swing.JLabel();
         btnEditarLogin = new javax.swing.JLabel();
+        txtNomeDoFilme = new javax.swing.JLabel();
+        statusFilme = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFuncoes = new javax.swing.JMenu();
         subAddFilme = new javax.swing.JMenuItem();
@@ -65,12 +83,6 @@ public class Classificacao extends javax.swing.JFrame {
 
         jLabel2.setText("Status do filme:");
 
-        radioBtnLista.setText("Lista");
-
-        radioBtnAssistindo.setText("Assistindo");
-
-        radioBtnAssistido.setText("Assistido");
-
         jLabel3.setText("Nota:");
 
         txtNota.addActionListener(new java.awt.event.ActionListener() {
@@ -78,6 +90,14 @@ public class Classificacao extends javax.swing.JFrame {
                 txtNotaActionPerformed(evt);
             }
         });
+
+        txtNomeDoFilme.setText("jLabel4");
+
+        statusFilme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         menuFuncoes.setText("Funções");
 
@@ -113,59 +133,64 @@ public class Classificacao extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(27, 27, 27)
-                        .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(107, 107, 107))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioBtnLista)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioBtnAssistindo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioBtnAssistido))
+                        .addGap(211, 211, 211)
+                        .addComponent(txtNomeDoFilme))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(133, 133, 133)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddLogin)
                         .addGap(32, 32, 32)
                         .addComponent(btnLimparLogin)
                         .addGap(33, 33, 33)
                         .addComponent(btnEditarLogin)))
-                .addGap(0, 64, Short.MAX_VALUE))
+                .addGap(0, 38, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(107, 107, 107))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(54, 54, 54)
+                                .addComponent(statusFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(134, 134, 134))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addGap(63, 63, 63)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtNomeDoFilme)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(radioBtnLista)
-                    .addComponent(radioBtnAssistindo)
-                    .addComponent(radioBtnAssistido))
-                .addGap(29, 29, 29)
+                    .addComponent(statusFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(68, 68, 68)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditarLogin, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAddLogin)
                         .addComponent(btnLimparLogin)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         pack();
@@ -225,14 +250,15 @@ public class Classificacao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuFuncoes;
     private javax.swing.JMenu menuSair;
-    private javax.swing.JRadioButton radioBtnAssistido;
-    private javax.swing.JRadioButton radioBtnAssistindo;
-    private javax.swing.JRadioButton radioBtnLista;
+    private javax.swing.JComboBox<String> statusFilme;
     private javax.swing.JMenuItem subAddFilme;
     private javax.swing.JMenuItem subCatalogo;
+    public static javax.swing.JLabel txtNomeDoFilme;
     private javax.swing.JTextField txtNota;
     // End of variables declaration//GEN-END:variables
 }
