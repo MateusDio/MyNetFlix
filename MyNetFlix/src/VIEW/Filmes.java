@@ -7,10 +7,8 @@ package VIEW;
 
 import DAO.FilmeDAO;
 import DTO.FilmeDTO;
-import com.sun.javafx.image.impl.IntArgb;
-import com.sun.org.apache.bcel.internal.generic.DSTORE;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,6 +21,15 @@ public class Filmes extends javax.swing.JFrame {
 
     public Filmes() {
         initComponents();
+
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        modelo.addElement("Livre");
+        modelo.addElement("12 Anos");
+        modelo.addElement("14 Anos");
+        modelo.addElement("16 Anos");
+        modelo.addElement("18 Anos");
+
+        cboFaixaEtaria.setModel(modelo);
 
     }
 
@@ -52,10 +59,10 @@ public class Filmes extends javax.swing.JFrame {
         tbFilmes = new javax.swing.JTable();
         txtIdfilme = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboFaixaEtaria = new javax.swing.JComboBox<>();
+        cboFaixaEtaria = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtSinopse = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,17 +119,17 @@ public class Filmes extends javax.swing.JFrame {
 
         tbFilmes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Título:", "Gênero:", "Plataforma:", "Faixa Etária:"
+                "ID:", "Título:", "Gênero:", "Plataforma:", "Faixa Etária:", "Sinopse:"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -133,58 +140,56 @@ public class Filmes extends javax.swing.JFrame {
 
         jLabel5.setText("Id filme:");
 
-        jComboFaixaEtaria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboFaixaEtaria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel7.setText("Sinopse:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtSinopse.setColumns(20);
+        txtSinopse.setRows(5);
+        jScrollPane2.setViewportView(txtSinopse);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(285, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(254, 254, 254))
             .addGroup(layout.createSequentialGroup()
                 .addGap(124, 124, 124)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel5)))
-                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboFaixaEtaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtIdfilme)
-                        .addComponent(txtTitulo)
-                        .addComponent(txtGenero)
-                        .addComponent(txtPlataforma, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnAdd)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnListar)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnRemover)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnEditar)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnLimpar))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel5)))
+                            .addGap(50, 50, 50)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cboFaixaEtaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtIdfilme)
+                                    .addComponent(txtTitulo)
+                                    .addComponent(txtGenero)
+                                    .addComponent(txtPlataforma, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(169, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(254, 254, 254))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(148, 148, 148))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnAdd)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnListar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRemover)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLimpar)
-                        .addGap(264, 264, 264))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,7 +214,7 @@ public class Filmes extends javax.swing.JFrame {
                     .addComponent(txtPlataforma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboFaixaEtaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboFaixaEtaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,21 +239,44 @@ public class Filmes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtPlataformaActionPerformed
 
-    private void btnAddMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMousePressed
-        FilmeDTO DTOedit = new FilmeDTO();
-        DTOedit.setId_Filme(Integer.parseInt(txtIdfilme.getText()));
-        DTOedit.setTitulo_Filme(txtTitulo.getText());
-        DTOedit.setGenero_Filme(txtGenero.getText());
-        DTOedit.setPlataforma_filme(txtPlataforma.getText());
-        f2.setFaixaEtaria(Integer.parseInt(jComboFaixaEtaria.getSelectedItem().toString()));
+    private int extrair(String faixa) {
+        if (faixa.equalsIgnoreCase("Livre")) {
+            return 0;
+        }
 
+        try {
+            return Integer.parseInt(faixa.replaceAll("[^0-9]", ""));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private void btnAddMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMousePressed
+
+        String titulo = txtTitulo.getText();
+        String genero = txtGenero.getText();
+        String plataforma = txtPlataforma.getText();
+        String faixaEtaria = cboFaixaEtaria.getSelectedItem().toString();
+
+        DefaultTableModel model = (DefaultTableModel) tbFilmes.getModel();
+        model.addRow(new Object[]{titulo, genero, plataforma, faixaEtaria});
+
+        FilmeDTO DTOedit = new FilmeDTO();
+
+        DTOedit.setTitulo_Filme(titulo);
+        DTOedit.setGenero_Filme(genero);
+        DTOedit.setPlataforma_filme(plataforma);
+      
+        DTOedit.setFaixaEtaria(extrair(faixaEtaria));
+        String sinopse = txtSinopse.getText();
+        DTOedit.setSinopse(sinopse);
+        
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.add(DTOedit);
-
     }//GEN-LAST:event_btnAddMousePressed
 
     private void btnListarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnListarMousePressed
-        
+            f1.pesquisaAuto();
     }//GEN-LAST:event_btnListarMousePressed
 
     private void btnRemoverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoverMousePressed
@@ -257,7 +285,7 @@ public class Filmes extends javax.swing.JFrame {
         DTOedit.setTitulo_Filme(txtTitulo.getText());
         DTOedit.setGenero_Filme(txtGenero.getText());
         DTOedit.setPlataforma_filme(txtPlataforma.getText());
-        DTOedit.setFaixaEtaria(Integer.parseInt(jComboFaixaEtaria.getSelectedItem().toString()));
+        DTOedit.setFaixaEtaria(Integer.parseInt(cboFaixaEtaria.getSelectedItem().toString()));
 
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.deletar(DTOedit);
@@ -270,7 +298,8 @@ public class Filmes extends javax.swing.JFrame {
         DTOedit.setTitulo_Filme(txtTitulo.getText());
         DTOedit.setGenero_Filme(txtGenero.getText());
         DTOedit.setPlataforma_filme(txtPlataforma.getText());
-        DTOedit.setFaixaEtaria(Integer.parseInt(jComboFaixaEtaria.getSelectedItem().toString()));
+        DTOedit.setFaixaEtaria(extrair(cboFaixaEtaria.getSelectedItem().toString()));
+        DTOedit.setSinopse(txtSinopse.getText());
 
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.editar(DTOedit);
@@ -321,7 +350,7 @@ public class Filmes extends javax.swing.JFrame {
     public static javax.swing.JLabel btnLimpar;
     public static javax.swing.JLabel btnListar;
     public static javax.swing.JLabel btnRemover;
-    private javax.swing.JComboBox<String> jComboFaixaEtaria;
+    private javax.swing.JComboBox<String> cboFaixaEtaria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -331,11 +360,11 @@ public class Filmes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     public static javax.swing.JTable tbFilmes;
     private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtIdfilme;
     private javax.swing.JTextField txtPlataforma;
+    private javax.swing.JTextArea txtSinopse;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
