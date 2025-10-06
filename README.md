@@ -5,21 +5,21 @@ use FilmesBanco;
 
 
 
-create table catalogo_filmes(
-idFilme int not null auto_increment unique primary key,
-tituloFilme varchar (50) not null unique,
-generoFilme varchar (50) not null, 
-plataforma varchar (50) not null,
-faixaEtaria int not null
+CREATE TABLE Catalogo_Filmes(
+    idFilme INT PRIMARY KEY AUTO_INCREMENT,
+    tituloFilme VARCHAR(50) NOT NULL UNIQUE,
+    generoFilme VARCHAR(50) NOT NULL,
+    plataforma VARCHAR(50) NOT NULL,
+    faixaEtaria INT NOT NULL,
+    sinopse VARCHAR(300) NOT NULL,
+    nota INT NOT NULL
 );
 
-create table tb_Usuario(
-id_usuario int primary key unique not null auto_increment,
-nome_usuario varchar (50) not null,
-status_usuario varchar (25) not null,
-nota int not null,
-Login varchar(50) not null unique,
-Senha varchar(50) not null
+CREATE TABLE tb_usuario(
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome_usuario VARCHAR(50) NOT NULL,
+    Login VARCHAR(50) NOT NULL UNIQUE,
+    Senha VARCHAR(50) NOT NULL
 );
 
 select * from catalogo_filmes;
@@ -38,4 +38,21 @@ confirSenha varchar (10) not null
 
 select * from cadastro_usuario;
 describe cadastro_usuario;
+
+CREATE TABLE usuario_filme1 (
+    id_usuario INT NOT NULL,
+    id_filme INT NOT NULL,
+    status_visualizacao VARCHAR(25) NOT NULL,  
+    nota_usuario INT,
+    PRIMARY KEY (id_usuario, id_filme),         
+    FOREIGN KEY (id_usuario) REFERENCES tb_Usuario(id_usuario),
+    FOREIGN KEY (id_filme) REFERENCES Catalogo_Filmes(idFilme)
+);
+
+
+CREATE TABLE login(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    login VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(50) NOT NULL
+);
 
