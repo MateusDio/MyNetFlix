@@ -5,17 +5,22 @@
  */
 package VIEW;
 
+import java.awt.Color;
+import javax.swing.JMenuItem;
+
 /**
  *
  * @author aluno.saolucas
  */
-public class TelaPrincipal extends javax.swing.JFrame {
+public class TelaPrincipal extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
         initComponents();
+        subMenuAdcFilmes.setEnabled(false);
+
     }
 
     /**
@@ -60,6 +65,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         subMenuAdcFilmes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         subMenuAdcFilmes.setText("Adicionar filmes");
+        subMenuAdcFilmes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                subMenuAdcFilmesMousePressed(evt);
+            }
+        });
+        subMenuAdcFilmes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuAdcFilmesActionPerformed(evt);
+            }
+        });
         jMenu1.add(subMenuAdcFilmes);
 
         subMenuCatálogo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
@@ -120,8 +135,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void habilitarAdmin() {
+        subMenuAdcFilmes.setEnabled(true);
+        txtBnv.setForeground(Color.PINK);
+        txtBnv.repaint();
+
+    }
+
+    public void setUsuario(String nome) {
+        txtBnv.setText("Bem vindo, " + nome + "!");
+
+        if (nome != null && nome.trim().equalsIgnoreCase("admin")) {
+            subMenuAdcFilmes.setEnabled(true);
+            txtBnv.setForeground(Color.PINK);
+        } else {
+            subMenuAdcFilmes.setEnabled(false);
+            txtBnv.setForeground(Color.BLACK);
+        }
+    }
+
+
     private void subMenuCatálogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCatálogoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_subMenuCatálogoActionPerformed
 
     private void subMenuCatálogoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuCatálogoMousePressed
@@ -130,6 +165,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Desktop.add(cata);
         System.out.println("asdsaasdas");
     }//GEN-LAST:event_subMenuCatálogoMousePressed
+
+    private void subMenuAdcFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcFilmesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subMenuAdcFilmesActionPerformed
+
+    private void subMenuAdcFilmesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuAdcFilmesMousePressed
+        Filmes f1 = new Filmes(); 
+        f1.setVisible(true);
+        Desktop.add(f1);
+        System.out.println("Filme funcionando");
+    }//GEN-LAST:event_subMenuAdcFilmesMousePressed
 
     /**
      * @param args the command line arguments
@@ -174,8 +220,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public static javax.swing.JMenuItem jMenuItem1;
     public static javax.swing.JMenu menuAjuda;
     public static javax.swing.JMenu menuSair;
-    public static javax.swing.JMenuItem subMenuAdcFilmes;
+    public javax.swing.JMenuItem subMenuAdcFilmes;
     public static javax.swing.JMenuItem subMenuCatálogo;
-    public static javax.swing.JLabel txtBnv;
+    public javax.swing.JLabel txtBnv;
     // End of variables declaration//GEN-END:variables
 }

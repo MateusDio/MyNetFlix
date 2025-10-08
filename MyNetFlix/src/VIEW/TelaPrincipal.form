@@ -19,8 +19,12 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Adicionar filmes"/>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="subMenuAdcFilmesMousePressed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuAdcFilmesActionPerformed"/>
+              </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="subMenuCat&#xe1;logo">
@@ -152,7 +156,7 @@
         <Property name="text" type="java.lang.String" value="Bem vindo, usu&#xe1;rio!"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
   </SubComponents>
