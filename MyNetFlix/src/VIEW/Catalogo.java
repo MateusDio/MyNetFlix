@@ -27,7 +27,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
     public Catalogo() {
 
         initComponents();
-        f1.listar();
+        f1.atualizarTabelaStatus(u1);
         generos = Arrays.asList(
                 "Vazio", "Ação", "Aventura", "Animação", "Comédia", "Comédia Romântica", "Crime", "Documentário",
                 "Drama", "Ficção Científica", "Fantasia", "Guerra", "Mistério", "Musical", "Policial",
@@ -248,21 +248,48 @@ public class Catalogo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_FiltroPlataformaActionPerformed
 
     private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
-        try {
-            int linha = TbFilmes.getSelectedRow();
+                                       
+ try {
+        int linha = TbFilmes.getSelectedRow();
 
-            if (linha != -1) {
-                String nome = TbFilmes.getValueAt(linha, 0).toString();
+        if (linha != -1) {
 
-                
-                c2.setNomeDoFilme(nome);
-                c2.setVisible(true);
+
+            String titulo = TbFilmes.getValueAt(linha, 0).toString();
+
+            
+            String sinopse = f1.buscarSinopsePorTitulo(titulo);
+            Integer id = f1.buscarIdPorTitulo(titulo);
+
+            
+            if (sinopse != null && !sinopse.isEmpty()) {
+                c2.txtAreaSinopse.setText(sinopse);
+            } else {
+                c2.txtAreaSinopse.setText("Sinopse não disponível.");
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();  // para ajudar no debug no console
+
+           
+            if (id != null) {
+                c2.txtId.setText(String.valueOf(id));
+            } else {
+                c2.txtId.setText("ID não encontrado");
+            }
+
+          
+            String nome = TbFilmes.getValueAt(linha, 1).toString();
+            c2.setNomeDoFilme(nome);
+
+            
+            c2.setVisible(true);
         }
 
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Ocorreu um erro ao selecionar o filme: " + e.getMessage(), 
+            "Erro", 
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_TbFilmesMouseClicked
 
     /**
