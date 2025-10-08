@@ -125,6 +125,144 @@ public class FilmeDAO {
 
     }
 
+
+
+    public void addStatus(Classificacao c1) {
+    String sql = "INSERT INTO usuario_filme1 (status_visualizacao) VALUES (?)";
+    id usuario
+    
+    String statusSelecionado = (String) c1.statusFilme.getSelectedItem();
+    String id = (int) c1.txtId.getText();
+
+    try (Connection conexao = new ConexaoDAO().conector();
+         PreparedStatement pst = conexao.prepareStatement(sql)) {
+
+        pst.setString(1, statusSelecionado); 
+        int add = pst.executeUpdate();
+
+        if (add > 0) {
+            pesquisaAuto();
+            limpar();
+            JOptionPane.showMessageDialog(null, "Filme adicionado com sucesso!");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Método adicionar: " + e.getMessage());
+    }
+}
+
+
+     public void atualizarTabelaStatus(UsuarioDTO usuario) {
+    
+    if (usuario == null) {
+        JOptionPane.showMessageDialog(null, "Usuário não informado.");
+        return;
+    }
+    if (Filmes.tbFilmes == null) {
+        JOptionPane.showMessageDialog(null, "Tabela tbFilmes não inicializada.");
+        return;
+    }
+
+    String sql = "SELECT f.idFilme, f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, " +
+                 "uf.status_visualizacao " +
+                 "FROM catalogo_filmes f " +
+                 "LEFT JOIN usuario_filme1 uf ON f.idFilme = uf.id_filme AND uf.id_usuario = ?";
+
+    try (Connection conexao = new ConexaoDAO().conector()) {
+
+        if (conexao == null) {
+            JOptionPane.showMessageDialog(null, "Falha na conexão com o banco!");
+            return;
+        }
+
+        try (PreparedStatement pst = conexao.prepareStatement(sql)) {
+            pst.setInt(1, usuario.getId_usuario());
+
+            try (ResultSet rs = pst.executeQuery()) {
+                DefaultTableModel model = (DefaultTableModel) Filmes.tbFilmes.getModel();
+                model.setRowCount(0); // Limpa a tabela
+
+                while (rs.next()) {
+                    int id = rs.getInt("idFilme");
+                    String titulo = rs.getString("tituloFilme");
+                    String genero = rs.getString("generoFilme");
+                    String plataforma = rs.getString("plataforma");
+                    int faixa = rs.getInt("faixaEtaria");
+                    String status = rs.getString("status_visualizacao");
+
+                    // Se status for null, pode exibir "Não visto"
+                    if (status == null) status = "Não visto";
+
+                    model.addRow(new Object[]{id, titulo, genero, plataforma, faixa, status});
+                }
+            }
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao atualizar tabela: " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+    
+}
+   
+   public Integer buscarIdPorTitulo(String titulo) {
+    Integer idFilme = null;
+    String sql = "SELECT idFilme FROM catalogo_filmes WHERE tituloFilme = ?";
+
+    try (Connection conexao = new ConexaoDAO().conector();
+         PreparedStatement pst = conexao.prepareStatement(sql)) {
+
+        pst.setString(1, titulo);
+
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                idFilme = rs.getInt("idFilme");
+            }
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao buscar ID do filme: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    return idFilme;
+}
+
+    public String buscarSinopsePorTitulo(String titulo) {
+        String sinopse = null;
+        String sql = "SELECT sinopse FROM catalogo_filmes WHERE tituloFilme = ?";
+        conexao = ConexaoDAO.conector();
+
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, titulo);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                sinopse = rs.getString("sinopse");
+            }
+        } catch (Exception e) {
+
+            System.out.println("Erro ao buscar sinopse: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (conexao != null) {
+                    conexao.close();
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        return sinopse;
+    }
+
    public void listarFilmesAssistidos(UsuarioDTO objUsuarioDTO) {
     String sql = "SELECT f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao " +
                  "FROM usuario_filme1 uf " +  // Tabela correta: usuario_filme1
@@ -297,4 +435,5 @@ public class FilmeDAO {
     }
 }
 }
+
 
