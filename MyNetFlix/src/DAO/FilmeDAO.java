@@ -2,18 +2,13 @@ package DAO;
 
 import DTO.FilmeDTO;
 import DTO.UsuarioDTO;
-import VIEW.Cadastrar;
 import VIEW.Catalogo;
 import VIEW.Filmes;
-import VIEW.TelaPrincipal;
-import com.sun.xml.internal.ws.client.ContentNegotiation;
-import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

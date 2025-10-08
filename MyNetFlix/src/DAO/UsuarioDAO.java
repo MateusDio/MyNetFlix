@@ -18,54 +18,46 @@ public class UsuarioDAO {
     PreparedStatement pst = null;
     ResultSet rs = null;
 
-    public void logar(UsuarioDTO objusuarioDTO) {
-        String sql = "select * from login where login = ? and senha = ?";
-        conexao = ConexaoDAO.conector();
+    public boolean logar(UsuarioDTO objusuarioDTO) {
+        String sql = "SELECT * FROM login WHERE login = ? AND senha = ?";
+        try (Connection conexao = ConexaoDAO.conector();
+                PreparedStatement pst = conexao.prepareStatement(sql)) {
 
-        try {
-            pst = conexao.prepareStatement(sql);
             pst.setString(1, objusuarioDTO.getLogin_usuario());
             pst.setString(2, objusuarioDTO.getSenha_usuario());
+            ResultSet rs = pst.executeQuery();
 
-            rs = pst.executeQuery();
+            return rs.next();
 
-            if (rs.next()) {
-                String login = rs.getString("login");
-                String senha = rs.getString("senha");
-
-                TelaPrincipal pr = new TelaPrincipal();
-                pr.setVisible(true);
-
-                if ("administrador".equalsIgnoreCase(senha)) {
-                    TelaPrincipal.menuAjuda.setEnabled(true);
-                    TelaPrincipal.subMenuAdcFilmes.setEnabled(true);
-                    TelaPrincipal.txtBnv.setText("Bem vindo, " + login);
-                    TelaPrincipal.txtBnv.setForeground(Color.RED);
-                } else {
-                    TelaPrincipal.menuAjuda.setEnabled(false);
-                    TelaPrincipal.subMenuAdcFilmes.setEnabled(false);
-                    TelaPrincipal.txtBnv.setText("Bem vindo, " + login);
-                    TelaPrincipal.txtBnv.setForeground(Color.BLUE);
-                }
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos");
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "** tela login ***" + e);
-        } finally {
-            try {
-                if (conexao != null) {
-                    conexao.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
-    public void inserirAtualização(UsuarioDTO objUsuarioDTO) {
+    public String getTipoUsuario(UsuarioDTO objusuarioDTO) {
+        String sql = "SELECT tipo_usuario FROM login WHERE login = ? AND senha = ?";
+        try (Connection conexao = ConexaoDAO.conector();
+                PreparedStatement pst = conexao.prepareStatement(sql)) {
+
+            pst.setString(1, objusuarioDTO.getLogin_usuario());
+            pst.setString(2, objusuarioDTO.getSenha_usuario());
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("tipo_usuario"); // "admin" ou "user"
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+public void inserirAtualização(UsuarioDTO objUsuarioDTO) {
         String sql = "insert into tb_Usuario (nota_usuario, status_usuario)"
                 + "values (?)";
         conexao = new ConexaoDAO().conector();
