@@ -119,15 +119,39 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomeUsuActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String user = txtNomeUsu.getText();
-        String senha = new String(txtSenha.getPassword());
 
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setLogin_usuario(user);
-        usuarioDTO.setSenha_usuario(senha);
+    String nome = txtNomeUsu.getText().trim();
+    String senha = new String(txtSenha.getPassword()).trim();
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioDAO.logar(usuarioDTO);
+
+    if (nome.equals("") || senha.equals("")) {
+        JOptionPane.showMessageDialog(null, 
+                "Por favor, preencha todos os campos!", 
+                "Atenção", 
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+ 
+    UsuarioDTO usuarioDTO = new UsuarioDTO();
+    usuarioDTO.setLogin_usuario(nome);   
+    usuarioDTO.setSenha_usuario(senha);
+
+    UsuarioDAO usuarioDAO = new UsuarioDAO();
+    boolean loginValido = usuarioDAO.logar(usuarioDTO);
+
+    if (loginValido) {
+        JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
+
+        Catalogo telaCatalogo = new Catalogo();
+        telaCatalogo.setVisible(true);
+        this.dispose(); 
+    } else {
+        JOptionPane.showMessageDialog(null, 
+                "Nome ou senha incorretos!", 
+                "Erro de login", 
+                JOptionPane.ERROR_MESSAGE);
+    }
 
 
     }//GEN-LAST:event_btnLoginActionPerformed
