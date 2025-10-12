@@ -265,7 +265,7 @@ public class FilmeDAO {
 
    public void listarFilmesAssistidos(UsuarioDTO objUsuarioDTO) {
     String sql = "SELECT f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao " +
-                 "FROM usuario_filme1 uf " +  // Tabela correta: usuario_filme1
+                 "FROM usuario_filme1 uf " +  
                  "JOIN Catalogo_Filmes f ON uf.id_filme = f.idFilme " +
                  "WHERE uf.id_usuario = ? AND uf.status_visualizacao IN ('Assistido', 'Assistindo')";
 
@@ -276,7 +276,7 @@ public class FilmeDAO {
         ResultSet rs = pst.executeQuery();
 
         DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-        model.setNumRows(0); // Limpa a tabela
+        model.setNumRows(0); 
 
         while (rs.next()) {
             String titulo = rs.getString("tituloFilme");

@@ -19,21 +19,22 @@ public class UsuarioDAO {
     ResultSet rs = null;
 
     public boolean logar(UsuarioDTO objusuarioDTO) {
-        String sql = "SELECT * FROM login WHERE login = ? AND senha = ?";
-        try (Connection conexao = ConexaoDAO.conector();
-                PreparedStatement pst = conexao.prepareStatement(sql)) {
+    String sql = "SELECT * FROM cadastro_usuarios WHERE nome = ? AND senha = ?";
 
-            pst.setString(1, objusuarioDTO.getLogin_usuario());
-            pst.setString(2, objusuarioDTO.getSenha_usuario());
-            ResultSet rs = pst.executeQuery();
+    try (Connection conexao = ConexaoDAO.conector();
+         PreparedStatement pst = conexao.prepareStatement(sql)) {
 
-            return rs.next();
+        pst.setString(1, objusuarioDTO.getLogin_usuario());
+        pst.setString(2, objusuarioDTO.getSenha_usuario());
+        ResultSet rs = pst.executeQuery();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return rs.next(); 
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
+}
 
     public String getTipoUsuario(UsuarioDTO objusuarioDTO) {
         String sql = "SELECT tipo_usuario FROM login WHERE login = ? AND senha = ?";
