@@ -1,5 +1,6 @@
 package DAO;
 
+import DTO.CadastrarDTO;
 import DTO.UsuarioDTO;
 import VIEW.Cadastrar;
 import VIEW.Login;
@@ -36,27 +37,44 @@ public class UsuarioDAO {
     }
 }
 
-    public String getTipoUsuario(UsuarioDTO objusuarioDTO) {
-        String sql = "SELECT tipo_usuario FROM login WHERE login = ? AND senha = ?";
+public CadastrarDTO getTipoUsuario(CadastrarDTO objCadastroDTO) {
+    CadastrarDTO usuarioAutenticado = null;
+
+    // Verifica se é admin
+    if ("admin".equals(objCadastroDTO.getNome()) && "123".equals(objCadastroDTO.getSenha())) {
+        usuarioAutenticado = new CadastrarDTO();
+        usuarioAutenticado.setNome("admin");
+    } else {
+        // Login normal via banco
+        String sql = "SELECT idCadastro, nome, dataNascimento, senha, confirSenha "
+                   + "FROM nome WHERE nome = ? AND senha = ?";
+
         try (Connection conexao = ConexaoDAO.conector();
-                PreparedStatement pst = conexao.prepareStatement(sql)) {
+             PreparedStatement pst = conexao.prepareStatement(sql)) {
 
-            pst.setString(1, objusuarioDTO.getLogin_usuario());
-            pst.setString(2, objusuarioDTO.getSenha_usuario());
-            ResultSet rs = pst.executeQuery();
+            pst.setString(1, objCadastroDTO.getNome());
+            pst.setString(2, objCadastroDTO.getSenha());
 
-            if (rs.next()) {
-                return rs.getString("tipo_usuario"); // "admin" ou "user"
-            } else {
-                return null;
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    usuarioAutenticado = new CadastrarDTO();
+                    usuarioAutenticado.setIdCadastro(rs.getInt("idCadastro"));
+                    usuarioAutenticado.setNome(rs.getString("nome"));
+                    usuarioAutenticado.setDataNascimento(rs.getString("dataNascimento"));
+                    usuarioAutenticado.setSenha(rs.getString("senha"));
+                    usuarioAutenticado.setConfirSenha(rs.getString("confirSenha"));
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
+ 
+
+    return usuarioAutenticado;
+}
 
 public void inserirAtualização(UsuarioDTO objUsuarioDTO) {
         String sql = "insert into tb_Usuario (nota_usuario, status_usuario)"

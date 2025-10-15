@@ -34,7 +34,7 @@ public class CadastrarDAO {
                 listar();
                 pst.close();
                 limpar();
-                JOptionPane.showMessageDialog(null, "Filme adicionado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Usuario adicionado com sucesso!");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Método adicionar " + e);

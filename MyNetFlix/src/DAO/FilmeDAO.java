@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class FilmeDAO {
@@ -30,7 +31,7 @@ public class FilmeDAO {
             pst.setString(2, objFilmeDTO.getGenero_Filme());
             pst.setString(3, objFilmeDTO.getPlataforma_filme());
             pst.setInt(4, objFilmeDTO.getFaixaEtaria());
-            pst.setString(5, objFilmeDTO.getSinopse());
+            pst.setString(5, objFilmeDTO.getSinopse_filme());
             int add = pst.executeUpdate();
             if (add > 0) {
                 pesquisaAuto();
@@ -54,7 +55,7 @@ public class FilmeDAO {
             pst.setString(2, objFilmeDTO.getGenero_Filme());
             pst.setString(3, objFilmeDTO.getPlataforma_filme());
             pst.setInt(4, objFilmeDTO.getFaixaEtaria());
-            pst.setString(5, objFilmeDTO.getSinopse());
+            pst.setString(5, objFilmeDTO.getSinopse_filme());
             pst.setInt(6, objFilmeDTO.getId_Filme());
             int add = pst.executeUpdate();
             if (add > 0) {
@@ -118,46 +119,34 @@ public class FilmeDAO {
         }
     }
 
-   public void addStatus(Classificacao c1) {
-    String sql = "INSERT INTO usuario_filme1 (id_usuario, id_filme, status_visualizacao) VALUES (?, ?, ?)";
-    conexao = new ConexaoDAO().conector();
-    PreparedStatement pst = null;
+ public void addStatus(int idUsuario, int idFilme, String status) throws SQLException {
 
-    try {
-        if (c1.txtIdUsu.getText().isEmpty() || c1.txt.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha os campos de ID!");
-            return;
-        }
+    String sqlCheck = "SELECT * FROM usuario_filme1 WHERE id_usuario = ? AND id_filme = ?";
+    try (Connection conexao = ConexaoDAO.conector();
+         PreparedStatement pstCheck = conexao.prepareStatement(sqlCheck)) {
 
-        int idUsuario = Integer.parseInt(c1.txtIdUsu.getText());
-        int idFilme = Integer.parseInt(c1.txtIdFilme.getText());
+        pstCheck.setInt(1, idUsuario);
+        pstCheck.setInt(2, idFilme);
+        ResultSet rs = pstCheck.executeQuery();
 
-        if (c1.statusFilme.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um status!");
-            return;
-        }
-        String statusSelecionado = c1.statusFilme.getSelectedItem().toString();
-
-        pst = conexao.prepareStatement(sql);
-        pst.setInt(1, idUsuario);
-        pst.setInt(2, idFilme);
-        pst.setString(3, statusSelecionado);
-
-        int add = pst.executeUpdate();
-        if (add > 0) {
-            pesquisaAuto();
-            limpar();
-            JOptionPane.showMessageDialog(null, "Status adicionado com sucesso!");
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Erro ao adicionar status: " + e.getMessage());
-    } finally {
-        try {
-            if (pst != null) pst.close();
-            if (conexao != null) conexao.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
+        if (rs.next()) {
+            // Atualiza status existente
+            String sqlUpdate = "UPDATE usuario_filme1 SET status_visualizacao = ? WHERE id_usuario = ? AND id_filme = ?";
+            try (PreparedStatement pstUpdate = conexao.prepareStatement(sqlUpdate)) {
+                pstUpdate.setString(1, status);
+                pstUpdate.setInt(2, idUsuario);
+                pstUpdate.setInt(3, idFilme);
+                pstUpdate.executeUpdate();
+            }
+        } else {
+            // Insere novo registro
+            String sqlInsert = "INSERT INTO usuario_filme1 (id_usuario, id_filme, status_visualizacao) VALUES (?, ?, ?)";
+            try (PreparedStatement pstInsert = conexao.prepareStatement(sqlInsert)) {
+                pstInsert.setInt(1, idUsuario);
+                pstInsert.setInt(2, idFilme);
+                pstInsert.setString(3, status);
+                pstInsert.executeUpdate();
+            }
         }
     }
 }
@@ -201,24 +190,22 @@ public class FilmeDAO {
         }
     }
 
-    public Integer buscarIdPorTitulo(String titulo) {
-        Integer idFilme = null;
-        String sql = "SELECT idFilme FROM catalogo_filmes WHERE tituloFilme = ?";
-
-        try (Connection conexao = new ConexaoDAO().conector();
-             PreparedStatement pst = conexao.prepareStatement(sql)) {
-
-                        pst.setString(1, titulo);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    idFilme = rs.getInt("idFilme");
-                }
+ public Integer buscarIdPorTitulo(String titulo) {
+    Integer idFilme = null;
+    String sql = "SELECT idFilme FROM catalogo_filmes WHERE TRIM(tituloFilme) = ?";
+    try (Connection conexao = ConexaoDAO.conector();
+         PreparedStatement pst = conexao.prepareStatement(sql)) {
+        pst.setString(1, titulo.trim());
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                idFilme = rs.getInt("idFilme");
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar ID do filme: " + e.getMessage());
         }
-        return idFilme;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao buscar ID do filme: " + e.getMessage());
     }
+    return idFilme;
+}
 
     public String buscarSinopsePorTitulo(String titulo) {
         String sinopse = null;
@@ -240,32 +227,36 @@ public class FilmeDAO {
         return sinopse;
     }
 
-    public void listarFilmesAssistidos(UsuarioDTO objUsuarioDTO) {
-        String sql = "SELECT f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao "
-                   + "FROM usuario_filme1 uf "
-                   + "JOIN catalogo_filmes f ON uf.id_filme = f.idFilme "
-                   + "WHERE uf.id_usuario = ? AND uf.status_visualizacao IN ('Assistido', 'Assistindo')";
-        conexao = ConexaoDAO.conector();
+public void listarFilmesAssistidos(UsuarioDTO usuario) {
+    String sql = "SELECT f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao "
+               + "FROM usuario_filme1 uf "
+               + "JOIN catalogo_filmes f ON uf.id_filme = f.idFilme "
+               + "WHERE uf.id_usuario = ? AND uf.status_visualizacao IN ('Assistido', 'Assistindo')";
 
-        try (PreparedStatement pst = conexao.prepareStatement(sql)) {
-            pst.setInt(1, objUsuarioDTO.getId_usuario());
-            ResultSet rs = pst.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-            model.setNumRows(0);
-            while (rs.next()) {
-                String titulo = rs.getString("tituloFilme");
-                String genero = rs.getString("generoFilme");
-                String plataforma = rs.getString("plataforma");
-                int faixaEtaria = rs.getInt("faixaEtaria");
-                String status = rs.getString("status_visualizacao");
-                model.addRow(new Object[]{titulo, genero, plataforma, faixaEtaria, status});
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar filmes assistidos: " + e.getMessage());
-        } finally {
-            fecharConexao();
+    try (Connection conexao = ConexaoDAO.conector();
+         PreparedStatement pst = conexao.prepareStatement(sql)) {
+
+        pst.setInt(1, usuario.getId_usuario());
+        ResultSet rs = pst.executeQuery();
+
+        DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
+        model.setNumRows(0);
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("tituloFilme"),
+                rs.getString("generoFilme"),
+                rs.getString("plataforma"),
+                rs.getInt("faixaEtaria"),
+                rs.getString("status_visualizacao")
+            });
         }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao listar filmes assistidos: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
     public void listarFilmesFiltrados(Catalogo c1) {
         Object generoObj = c1.FiltroGenero.getSelectedItem();
