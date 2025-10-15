@@ -7,6 +7,7 @@ package VIEW;
 
 import DAO.ConexaoDAO;
 import DAO.UsuarioDAO;
+import DTO.CadastrarDTO;
 import DTO.UsuarioDTO;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,9 +26,10 @@ public class Login extends javax.swing.JFrame {
     Connection conexao = null;
 
     public Login() {
+       
+        initComponents();
         ConexaoDAO dao = new ConexaoDAO();
         Connection conn = dao.conector();
-        initComponents();
         conexao = ConexaoDAO.conector();
         System.out.println(conexao);
 
@@ -122,37 +124,46 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
     String nome = txtNomeUsu.getText().trim();
-    String senha = new String(txtSenha.getPassword()).trim();
+String senha = new String(txtSenha.getPassword()).trim();
 
+// Validação de campos
+if (nome.equals("") || senha.equals("")) {
+    JOptionPane.showMessageDialog(null, 
+            "Por favor, preencha todos os campos!", 
+            "Atenção", 
+            JOptionPane.WARNING_MESSAGE);
+    return;
+}
 
-    if (nome.equals("") || senha.equals("")) {
-        JOptionPane.showMessageDialog(null, 
-                "Por favor, preencha todos os campos!", 
-                "Atenção", 
-                JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+// Cria objeto DTO com dados do login
+UsuarioDTO usuarioDTO = new UsuarioDTO();
+usuarioDTO.setLogin_usuario(nome);
+usuarioDTO.setSenha_usuario(senha);
 
- 
-    UsuarioDTO usuarioDTO = new UsuarioDTO();
-    usuarioDTO.setLogin_usuario(nome);   
-    usuarioDTO.setSenha_usuario(senha);
+// Valida login via DAO
+UsuarioDAO usuarioDAO = new UsuarioDAO();
+boolean loginValido = usuarioDAO.logar(usuarioDTO);
 
-    UsuarioDAO usuarioDAO = new UsuarioDAO();
-    boolean loginValido = usuarioDAO.logar(usuarioDTO);
+if (loginValido) {
+    JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
 
-    if (loginValido) {
-        JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
+    // Converte UsuarioDTO para CadastrarDTO para passar para TelaPrincipal
+    CadastrarDTO usuarioLogado = new CadastrarDTO();
+    usuarioLogado.setNome(usuarioDTO.getLogin_usuario());
+    usuarioLogado.setSenha(usuarioDTO.getSenha_usuario());
+    // Se tiver outros campos, preencha também
 
-        Catalogo telaCatalogo = new Catalogo();
-        telaCatalogo.setVisible(true);
-        this.dispose(); 
-    } else {
-        JOptionPane.showMessageDialog(null, 
-                "Nome ou senha incorretos!", 
-                "Erro de login", 
-                JOptionPane.ERROR_MESSAGE);
-    }
+    // Abre TelaPrincipal com o usuário logado
+    TelaPrincipal telaCatalogo = new TelaPrincipal(usuarioLogado);
+    telaCatalogo.setVisible(true);
+    this.dispose(); // Fecha a tela de login
+
+} else {
+    JOptionPane.showMessageDialog(null, 
+            "Nome ou senha incorretos!", 
+            "Erro de login", 
+            JOptionPane.ERROR_MESSAGE);
+}
 
 
     }//GEN-LAST:event_btnLoginActionPerformed

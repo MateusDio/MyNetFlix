@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aluno.saolucas
  */
-public class Cadastrar extends javax.swing.JFrame {
+public class Cadastrar extends javax.swing.JInternalFrame {
 
     CadastrarDAO c1 = new CadastrarDAO();
     CadastrarDTO c2 = new CadastrarDTO();
@@ -28,7 +28,12 @@ public class Cadastrar extends javax.swing.JFrame {
 
     public Cadastrar() {
         initComponents();
-
+        initComponents();
+        setClosable(true);   // Permite fechar
+        setIconifiable(true); // Minimizar
+        setResizable(true);  // Redimensionar
+        setSize(400, 300);   // Tamanho inicial
+        setVisible(true);
         conexao = ConexaoDAO.conector();
         System.out.println(conexao);
     }

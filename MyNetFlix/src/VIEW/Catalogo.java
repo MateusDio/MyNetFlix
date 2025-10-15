@@ -16,18 +16,21 @@ import javax.swing.table.TableColumn;
 
 public class Catalogo extends javax.swing.JInternalFrame {
 
+    private UsuarioDTO usuarioLogado;
+    private FilmeDAO f1 = new FilmeDAO();
     public List<String> faixaEtaria = Arrays.asList();
     public List<String> generos = Arrays.asList();
     public List<String> plataformas = Arrays.asList();
     UsuarioDTO u1 = new UsuarioDTO();
     FilmeDTO f2 = new FilmeDTO();
-    FilmeDAO f1 = new FilmeDAO();
-    Classificacao c2 = new Classificacao();
+    Classificacao c2 = new Classificacao(u1, f2);
 
-    public Catalogo() {
+    public Catalogo(UsuarioDTO usuario) {
 
         initComponents();
-        f1.atualizarTabelaStatus(u1);
+        this.usuarioLogado = usuario;
+
+        f1.atualizarTabelaStatus(usuarioLogado);
         generos = Arrays.asList(
                 "Vazio", "Ação", "Aventura", "Animação", "Comédia", "Comédia Romântica", "Crime", "Documentário",
                 "Drama", "Ficção Científica", "Fantasia", "Guerra", "Mistério", "Musical", "Policial",
@@ -228,11 +231,15 @@ public class Catalogo extends javax.swing.JInternalFrame {
         FiltroFaixaEtaria.setSelectedItem("Vazio");
         FiltroGenero.setSelectedItem("Vazio");
         f1.listarFilmesAssistidos(u1);
-        
+
     }//GEN-LAST:event_HistoricoMouseClicked
 
     private void CatalogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CatalogoMouseClicked
         System.out.println("Catalogo aberto!");
+        FiltroPlataforma.setSelectedItem("Vazio");
+        FiltroFaixaEtaria.setSelectedItem("Vazio");
+        FiltroGenero.setSelectedItem("Vazio");
+        f1.listarFilmesFiltrados(this);
     }//GEN-LAST:event_CatalogoMouseClicked
 
     private void FiltroFaixaEtariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltroFaixaEtariaActionPerformed
@@ -248,48 +255,66 @@ public class Catalogo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_FiltroPlataformaActionPerformed
 
     private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
-                                       
- try {
-        int linha = TbFilmes.getSelectedRow();
+        try {
+            // Verificar linha selecionada
+            int linha = TbFilmes.getSelectedRow();
+            System.out.println("Linha selecionada: " + linha);
+            System.out.println("Usuario logado: " + usuarioLogado);
 
-        if (linha != -1) {
+            // Se não há linha selecionada ou usuário não está logado, não faz nada
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um filme antes de continuar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (usuarioLogado == null) {
+                JOptionPane.showMessageDialog(this, "Usuário não logado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            // Pegar os dados da tabela
+            String titulo = TbFilmes.getValueAt(linha, 0).toString().trim();
+            String genero = TbFilmes.getValueAt(linha, 1).toString();
+            String plataforma = TbFilmes.getValueAt(linha, 2).toString();
+            int faixaEtaria = Integer.parseInt(TbFilmes.getValueAt(linha, 3).toString());
 
-            String titulo = TbFilmes.getValueAt(linha, 0).toString();
+            // Buscar ID do filme no banco
+            Integer idFilme = f1.buscarIdPorTitulo(titulo);
+            if (idFilme == null || idFilme == 0) {
+                JOptionPane.showMessageDialog(this, "Não foi possível identificar o ID do filme selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            
+            // Debug: verificar IDs
+            System.out.println("Usuario ID: " + usuarioLogado.getId_usuario());
+            System.out.println("Titulo selecionado: '" + titulo + "'");
+            System.out.println("ID Filme buscado: " + idFilme);
+
+            // Buscar sinopse
             String sinopse = f1.buscarSinopsePorTitulo(titulo);
-            Integer id = f1.buscarIdPorTitulo(titulo);
-
-            
-            if (sinopse != null && !sinopse.isEmpty()) {
-                c2.txtAreaSinopse.setText(sinopse);
-            } else {
-                c2.txtAreaSinopse.setText("Sinopse não disponível.");
+            if (sinopse == null || sinopse.isEmpty()) {
+                sinopse = "Sinopse não disponível.";
             }
 
-           
-            if (id != null) {
-                c2.txtId.setText(String.valueOf(id));
-            } else {
-                c2.txtId.setText("ID não encontrado");
-            }
+            // Criar DTO do filme
+            FilmeDTO filmeSelecionado = new FilmeDTO();
+            filmeSelecionado.setId_Filme(idFilme);
+            filmeSelecionado.setTitulo_Filme(titulo);
+            filmeSelecionado.setGenero_Filme(genero);
+            filmeSelecionado.setPlataforma_filme(plataforma);
+            filmeSelecionado.setFaixaEtaria(faixaEtaria);
+            filmeSelecionado.setSinopse_filme(sinopse);
 
-          
-            String nome = TbFilmes.getValueAt(linha, 1).toString();
-            c2.setNomeDoFilme(nome);
-
-            
+            // Abrir tela de classificação
+            Classificacao c2 = new Classificacao(usuarioLogado, filmeSelecionado);
+            c2.setLocationRelativeTo(this);
             c2.setVisible(true);
-        }
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "Ocorreu um erro ao selecionar o filme: " + e.getMessage(), 
-            "Erro", 
-            JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Ocorreu um erro ao selecionar o filme: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_TbFilmesMouseClicked
 
     /**
@@ -323,7 +348,12 @@ public class Catalogo extends javax.swing.JInternalFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Catalogo().setVisible(true);
+                UsuarioDTO usuarioTeste = new UsuarioDTO();
+                usuarioTeste.setId_usuario(1);
+                usuarioTeste.setNome_usuario("João");
+
+                // Passa o usuário logado para o Catalogo
+                new Catalogo(usuarioTeste).setVisible(true);
             }
         });
     }

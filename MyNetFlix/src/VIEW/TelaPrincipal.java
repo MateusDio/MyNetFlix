@@ -5,22 +5,49 @@
  */
 package VIEW;
 
+import DTO.CadastrarDTO;
+import DTO.UsuarioDTO;
 import java.awt.Color;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author aluno.saolucas
  */
-public class TelaPrincipal extends javax.swing.JInternalFrame {
+public class TelaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaPrincipal
-     */
-    public TelaPrincipal() {
+    private UsuarioDTO usuarioLogado;
+
+    public TelaPrincipal(CadastrarDTO usuario) {
         initComponents();
-        subMenuAdcFilmes.setEnabled(false);
+       
 
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId_usuario(usuario.getIdCadastro()); // Certifique-se de que getId() existe
+        usuarioDTO.setNome_usuario(usuario.getNome());
+        this.usuarioLogado = usuarioDTO;
+
+        txtBnv.setText("Bem-vindo, " + usuarioLogado.getNome_usuario()+ "!");
+
+        if ("admin".equals(usuarioLogado.getNome_usuario())) {
+            ativarFuncoesAdmin();
+        } else {
+            ativarFuncoesUsuario();
+        }
+
+    }
+
+    private void ativarFuncoesAdmin() {
+ 
+        subMenuAdcFilmes.setEnabled(true);
+        subMenuAdcUsu.setEnabled(true);
+        
+    }
+
+    private void ativarFuncoesUsuario() {
+        subMenuAdcFilmes.setEnabled(false);
+        subMenuAdcUsu.setEnabled(false);
     }
 
     /**
@@ -38,12 +65,13 @@ public class TelaPrincipal extends javax.swing.JInternalFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         subMenuAdcFilmes = new javax.swing.JMenuItem();
+        subMenuAdcUsu = new javax.swing.JMenuItem();
         subMenuCatálogo = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         javax.swing.GroupLayout DesktopLayout = new javax.swing.GroupLayout(Desktop);
         Desktop.setLayout(DesktopLayout);
@@ -76,6 +104,20 @@ public class TelaPrincipal extends javax.swing.JInternalFrame {
             }
         });
         jMenu1.add(subMenuAdcFilmes);
+
+        subMenuAdcUsu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuAdcUsu.setText("Adcionar usuários");
+        subMenuAdcUsu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                subMenuAdcUsuMouseClicked(evt);
+            }
+        });
+        subMenuAdcUsu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuAdcUsuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(subMenuAdcUsu);
 
         subMenuCatálogo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
         subMenuCatálogo.setText("Catálogo");
@@ -160,10 +202,15 @@ public class TelaPrincipal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_subMenuCatálogoActionPerformed
 
     private void subMenuCatálogoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuCatálogoMousePressed
-        Catalogo cata = new Catalogo();
+        if (usuarioLogado == null) {
+            JOptionPane.showMessageDialog(this, "Nenhum usuário logado!");
+            return;
+        }
+
+        Catalogo cata = new Catalogo(usuarioLogado);
         cata.setVisible(true);
         Desktop.add(cata);
-        System.out.println("asdsaasdas");
+        System.out.println("Catalogo Funcionando");
     }//GEN-LAST:event_subMenuCatálogoMousePressed
 
     private void subMenuAdcFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcFilmesActionPerformed
@@ -171,11 +218,32 @@ public class TelaPrincipal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_subMenuAdcFilmesActionPerformed
 
     private void subMenuAdcFilmesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuAdcFilmesMousePressed
-        Filmes f1 = new Filmes(); 
-        f1.setVisible(true);
-        Desktop.add(f1);
+        Filmes f1 = new Filmes();
+        f1.setVisible(true);   
         System.out.println("Filme funcionando");
     }//GEN-LAST:event_subMenuAdcFilmesMousePressed
+
+    private void subMenuAdcUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcUsuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subMenuAdcUsuActionPerformed
+
+    private void subMenuAdcUsuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuAdcUsuMouseClicked
+          Cadastrar c1 = new Cadastrar();
+    
+    // Evita adicionar múltiplas instâncias
+    boolean aberto = false;
+    for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
+        if (frame instanceof Cadastrar) {
+            aberto = true;
+            frame.toFront(); // traz para frente
+            break;
+        }
+    }
+    if (!aberto) {
+        Desktop.add(c1);
+        c1.setVisible(true);
+    }
+    }//GEN-LAST:event_subMenuAdcUsuMouseClicked
 
     /**
      * @param args the command line arguments
@@ -207,7 +275,9 @@ public class TelaPrincipal extends javax.swing.JInternalFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPrincipal().setVisible(true);
+                CadastrarDTO usuarioTeste = new CadastrarDTO();
+                usuarioTeste.setNome("visitante"); // ou admin/teste
+                new TelaPrincipal(usuarioTeste).setVisible(true);
             }
         });
     }
@@ -221,6 +291,7 @@ public class TelaPrincipal extends javax.swing.JInternalFrame {
     public static javax.swing.JMenu menuAjuda;
     public static javax.swing.JMenu menuSair;
     public javax.swing.JMenuItem subMenuAdcFilmes;
+    private javax.swing.JMenuItem subMenuAdcUsu;
     public static javax.swing.JMenuItem subMenuCatálogo;
     public javax.swing.JLabel txtBnv;
     // End of variables declaration//GEN-END:variables

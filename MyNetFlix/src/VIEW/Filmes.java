@@ -269,7 +269,7 @@ public class Filmes extends javax.swing.JFrame {
       
         DTOedit.setFaixaEtaria(extrair(faixaEtaria));
         String sinopse = txtSinopse.getText();
-        DTOedit.setSinopse(sinopse);
+        DTOedit.setSinopse_filme(sinopse);
         
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.add(DTOedit);
@@ -299,7 +299,7 @@ public class Filmes extends javax.swing.JFrame {
         DTOedit.setGenero_Filme(txtGenero.getText());
         DTOedit.setPlataforma_filme(txtPlataforma.getText());
         DTOedit.setFaixaEtaria(extrair(cboFaixaEtaria.getSelectedItem().toString()));
-        DTOedit.setSinopse(txtSinopse.getText());
+        DTOedit.setSinopse_filme(txtSinopse.getText());
 
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.editar(DTOedit);
