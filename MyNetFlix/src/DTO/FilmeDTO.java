@@ -4,7 +4,7 @@ package DTO;
 
 public class FilmeDTO {
     private int id_Filme,FaixaEtaria;
-    private String titulo_Filme, genero_Filme, plataforma_filme, sinopse;
+    private String titulo_Filme, genero_Filme, plataforma_filme, sinopse_Filme;
 
     public int getId_Filme() {
         return id_Filme;
@@ -46,13 +46,15 @@ public class FilmeDTO {
         this.plataforma_filme = plataforma_filme;
     }
 
-    public String getSinopse() {
-        return sinopse;
+    public String getSinopse_filme() {
+        return sinopse_Filme;
     }
 
-    public void setSinopse(String sinopse) {
-        this.sinopse = sinopse;
+    public void setSinopse_filme(String sinopse_filme) {
+        this.sinopse_Filme = sinopse_filme;
     }
+
+  
 
  
     }
