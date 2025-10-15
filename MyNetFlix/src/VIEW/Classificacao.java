@@ -10,6 +10,7 @@ import DTO.FilmeDTO;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,9 +24,9 @@ public class Classificacao extends javax.swing.JFrame {
 
     public Classificacao() {
         initComponents();
-        txtAreaSinopse.setLineWrap(true);       
-        txtAreaSinopse.setWrapStyleWord(true); 
-        txtAreaSinopse.setEditable(false);      
+        txtAreaSinopse.setLineWrap(true);
+        txtAreaSinopse.setWrapStyleWord(true);
+        txtAreaSinopse.setEditable(false);
 
         status = Arrays.asList(
                 "Vazio", "Assistido", "Assistindo", "Não visto"
@@ -39,10 +40,6 @@ public class Classificacao extends javax.swing.JFrame {
 
     }
 
-    // Método que você vai usar para receber o nome do filme
-    public void setNomeDoFilme(String nome) {
-        txtNomeDoFilme.setText(nome);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,19 +58,20 @@ public class Classificacao extends javax.swing.JFrame {
         btnAddLogin = new javax.swing.JLabel();
         btnLimparLogin = new javax.swing.JLabel();
         btnEditarLogin = new javax.swing.JLabel();
-        txtNomeDoFilme = new javax.swing.JLabel();
-        statusFilme = new javax.swing.JComboBox<>();
+        cboStatus = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaSinopse = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        txtId = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         TbCadastros = new javax.swing.JTable();
-        jTextField2 = new javax.swing.JTextField();
+        txtIdFilme = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        txtIdUsu = new javax.swing.JTextField();
+        txtNomeFilme = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFuncoes = new javax.swing.JMenu();
         subAddFilme = new javax.swing.JMenuItem();
@@ -114,9 +112,7 @@ public class Classificacao extends javax.swing.JFrame {
 
         jLabel2.setText("Status do filme:");
 
-        txtNomeDoFilme.setText("jLabel4");
-
-        statusFilme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         txtAreaSinopse.setColumns(20);
         txtAreaSinopse.setRows(5);
@@ -131,9 +127,7 @@ public class Classificacao extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("id:");
-
-        txtId.setText("jLabel5");
+        jLabel3.setText("ID usuário:");
 
         TbCadastros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -158,13 +152,15 @@ public class Classificacao extends javax.swing.JFrame {
 
         jLabel5.setText("Id:");
 
+        jLabel6.setText("Nome Filme:");
+
         menuFuncoes.setText("Funções");
 
-        subAddFilme.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        subAddFilme.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         subAddFilme.setText("Adicionar filmes");
         menuFuncoes.add(subAddFilme);
 
-        subCatalogo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        subCatalogo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         subCatalogo.setText("Catálogo");
         menuFuncoes.add(subCatalogo);
 
@@ -172,7 +168,7 @@ public class Classificacao extends javax.swing.JFrame {
 
         menuAjuda.setText("Ajuda");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Sobre");
         menuAjuda.add(jMenuItem1);
 
@@ -192,17 +188,19 @@ public class Classificacao extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(93, 93, 93)
-                                .addComponent(jLabel4)
-                                .addGap(78, 78, 78)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtId))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(176, 176, 176)
                                 .addComponent(jButton1)
                                 .addGap(109, 109, 109)
-                                .addComponent(btnAddLogin)))
+                                .addComponent(btnAddLogin))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(93, 93, 93)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel4))
+                                .addGap(78, 78, 78)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtIdUsu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimparLogin)
                         .addGap(33, 33, 33)
@@ -216,11 +214,11 @@ public class Classificacao extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtIdFilme, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addGap(54, 54, 54)
-                                    .addComponent(statusFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(152, 152, 152))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,41 +226,42 @@ public class Classificacao extends javax.swing.JFrame {
                                 .addGap(119, 119, 119)
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(208, 208, 208)
-                                .addComponent(txtNomeDoFilme)))
+                                .addGap(25, 25, 25)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(187, 187, 187)
+                                .addComponent(txtNomeFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addGap(23, 23, 23)
-                .addComponent(txtNomeDoFilme)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNomeFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
-                    .addComponent(txtId))
+                    .addComponent(txtIdUsu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(statusFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -284,48 +283,57 @@ public class Classificacao extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
-
         try {
-            int linha = TbFilmes.getSelectedRow();
+            int linha = Filmes.tbFilmes.getSelectedRow();
 
             if (linha != -1) {
+   
+                Classificacao c2 = new Classificacao();
 
-                String titulo = TbFilmes.getValueAt(linha, 0).toString();
+                String titulo = Filmes.tbFilmes.getValueAt(linha, 0).toString();
 
+                // Busca informações no DAO
                 String sinopse = f1.buscarSinopsePorTitulo(titulo);
                 Integer id = f1.buscarIdPorTitulo(titulo);
 
+                // Define a sinopse
                 if (sinopse != null && !sinopse.isEmpty()) {
-                    c2.txtAreaSinopse.setText(sinopse);
+                    c2.setSinopse(sinopse);
                 } else {
-                    c2.txtAreaSinopse.setText("Sinopse não disponível.");
+                    c2.setSinopse("Sinopse não disponível.");
                 }
 
+                // Define o ID
                 if (id != null) {
-                    c2.txtId.setText(String.valueOf(id));
+                    c2.setIdFilme(String.valueOf(id));
                 } else {
-                    c2.txtId.setText("ID não encontrado");
+                    c2.setIdFilme("ID não encontrado");
                 }
 
-                String nome = TbFilmes.getValueAt(linha, 1).toString();
+                // Define o nome do filme
+                String nome = Filmes.tbFilmes.getValueAt(linha, 1).toString();
                 c2.setNomeDoFilme(nome);
 
+                // Exibe a nova janela
+                c2.setLocationRelativeTo(this);
                 c2.setVisible(true);
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                "Ocorreu um erro ao selecionar o filme: " + e.getMessage(),
-                "Erro",
-                JOptionPane.ERROR_MESSAGE);
+                    "Ocorreu um erro ao selecionar o filme: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+
+    }
     }//GEN-LAST:event_TbFilmesMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -336,16 +344,28 @@ public class Classificacao extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Classificacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Classificacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Classificacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Classificacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Classificacao.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Classificacao.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Classificacao.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Classificacao.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -365,27 +385,28 @@ public class Classificacao extends javax.swing.JFrame {
     private javax.swing.JLabel btnEditarLogin;
     private javax.swing.JLabel btnLimparLogin;
     private javax.swing.ButtonGroup buttonGroup1;
+    public javax.swing.JComboBox<String> cboStatus;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuFuncoes;
     private javax.swing.JMenu menuSair;
-    public static javax.swing.JComboBox<String> statusFilme;
     private javax.swing.JMenuItem subAddFilme;
     private javax.swing.JMenuItem subCatalogo;
     public static javax.swing.JTextArea txtAreaSinopse;
-    public static javax.swing.JLabel txtId;
-    public static javax.swing.JLabel txtNomeDoFilme;
+    public javax.swing.JTextField txtIdFilme;
+    public javax.swing.JTextField txtIdUsu;
+    public javax.swing.JTextField txtNomeFilme;
     // End of variables declaration//GEN-END:variables
 }
