@@ -4,6 +4,7 @@ import DTO.FilmeDTO;
 import DTO.UsuarioDTO;
 import VIEW.Catalogo;
 import VIEW.Filmes;
+import VIEW.Classificacao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +14,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author aluno.saolucas
- */
 public class FilmeDAO {
 
     Connection conexao = null;
@@ -24,8 +21,7 @@ public class FilmeDAO {
     ResultSet rs = null;
 
     public void add(FilmeDTO objFilmeDTO) {
-        String sql = "insert into catalogo_filmes (tituloFilme, generoFilme, plataforma, faixaEtaria, sinopse)"
-                + "values (?,?,?,?,?)";
+        String sql = "INSERT INTO catalogo_filmes (tituloFilme, generoFilme, plataforma, faixaEtaria, sinopse) VALUES (?,?,?,?,?)";
         conexao = new ConexaoDAO().conector();
 
         try {
@@ -38,18 +34,18 @@ public class FilmeDAO {
             int add = pst.executeUpdate();
             if (add > 0) {
                 pesquisaAuto();
-                pst.close();
                 limpar();
                 JOptionPane.showMessageDialog(null, "Filme adicionado com sucesso!");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Método adicionar " + e);
+        } finally {
+            fecharConexao();
         }
-
     }
 
     public void editar(FilmeDTO objFilmeDTO) {
-        String sql = "update catalogo_filmes set tituloFilme = ?, generoFilme = ?, plataforma = ?, faixaEtaria = ?, sinopse = ? where idFilme = ?";
+        String sql = "UPDATE catalogo_filmes SET tituloFilme = ?, generoFilme = ?, plataforma = ?, faixaEtaria = ?, sinopse = ? WHERE idFilme = ?";
         conexao = ConexaoDAO.conector();
 
         try {
@@ -64,11 +60,12 @@ public class FilmeDAO {
             if (add > 0) {
                 JOptionPane.showMessageDialog(null, "Filme editado com sucesso!");
                 pesquisaAuto();
-                conexao.close();
                 limpar();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Método editar " + e);
+        } finally {
+            fecharConexao();
         }
     }
 
@@ -78,7 +75,7 @@ public class FilmeDAO {
     }
 
     public void pesquisaAuto() {
-        String sql = "select * from catalogo_filmes";
+        String sql = "SELECT * FROM catalogo_filmes";
         conexao = ConexaoDAO.conector();
         try {
             pst = conexao.prepareStatement(sql);
@@ -87,147 +84,141 @@ public class FilmeDAO {
             model.setNumRows(0);
             while (rs.next()) {
                 int id = rs.getInt("idFilme");
-                String titulo = rs.getString("tituloFIlme");
+                String titulo = rs.getString("tituloFilme");
                 String genero = rs.getString("generoFilme");
                 String plataforma = rs.getString("plataforma");
                 int faixa = rs.getInt("faixaEtaria");
                 String sinopse = rs.getString("sinopse");
                 model.addRow(new Object[]{id, titulo, genero, plataforma, faixa, sinopse});
-
             }
-            conexao.close();
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Método pesquisar " + e);
+        } finally {
+            fecharConexao();
         }
     }
 
     public void deletar(FilmeDTO objFilmeDTO) {
-        String sql = "delete from catalogo_filmes where idFilme = ?";
+        String sql = "DELETE FROM catalogo_filmes WHERE idFilme = ?";
         conexao = ConexaoDAO.conector();
 
         try {
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, objFilmeDTO.getId_Filme());
-            System.out.println("ID recebido para edição: " + objFilmeDTO.getId_Filme());
             int del = pst.executeUpdate();
             if (del > 0) {
                 JOptionPane.showMessageDialog(null, "Filme deletado com sucesso!");
                 pesquisaAuto();
-                conexao.close();
                 limpar();
-
             }
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Método deletar " + e);
+        } finally {
+            fecharConexao();
         }
-
     }
 
+   public void addStatus(Classificacao c1) {
+    String sql = "INSERT INTO usuario_filme1 (id_usuario, id_filme, status_visualizacao) VALUES (?, ?, ?)";
+    conexao = new ConexaoDAO().conector();
+    PreparedStatement pst = null;
 
-
-    public void addStatus(Classificacao c1) {
-    String sql = "INSERT INTO usuario_filme1 (status_visualizacao) VALUES (?)";
-    id usuario
-    
-    String statusSelecionado = (String) c1.statusFilme.getSelectedItem();
-    String id = (int) c1.txtId.getText();
-
-    try (Connection conexao = new ConexaoDAO().conector();
-         PreparedStatement pst = conexao.prepareStatement(sql)) {
-
-        pst.setString(1, statusSelecionado); 
-        int add = pst.executeUpdate();
-
-        if (add > 0) {
-            pesquisaAuto();
-            limpar();
-            JOptionPane.showMessageDialog(null, "Filme adicionado com sucesso!");
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Método adicionar: " + e.getMessage());
-    }
-}
-
-
-     public void atualizarTabelaStatus(UsuarioDTO usuario) {
-    
-    if (usuario == null) {
-        JOptionPane.showMessageDialog(null, "Usuário não informado.");
-        return;
-    }
-    if (Filmes.tbFilmes == null) {
-        JOptionPane.showMessageDialog(null, "Tabela tbFilmes não inicializada.");
-        return;
-    }
-
-    String sql = "SELECT f.idFilme, f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, " +
-                 "uf.status_visualizacao " +
-                 "FROM catalogo_filmes f " +
-                 "LEFT JOIN usuario_filme1 uf ON f.idFilme = uf.id_filme AND uf.id_usuario = ?";
-
-    try (Connection conexao = new ConexaoDAO().conector()) {
-
-        if (conexao == null) {
-            JOptionPane.showMessageDialog(null, "Falha na conexão com o banco!");
+    try {
+        if (c1.txtIdUsu.getText().isEmpty() || c1.txt.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos de ID!");
             return;
         }
 
-        try (PreparedStatement pst = conexao.prepareStatement(sql)) {
+        int idUsuario = Integer.parseInt(c1.txtIdUsu.getText());
+        int idFilme = Integer.parseInt(c1.txtIdFilme.getText());
+
+        if (c1.statusFilme.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um status!");
+            return;
+        }
+        String statusSelecionado = c1.statusFilme.getSelectedItem().toString();
+
+        pst = conexao.prepareStatement(sql);
+        pst.setInt(1, idUsuario);
+        pst.setInt(2, idFilme);
+        pst.setString(3, statusSelecionado);
+
+        int add = pst.executeUpdate();
+        if (add > 0) {
+            pesquisaAuto();
+            limpar();
+            JOptionPane.showMessageDialog(null, "Status adicionado com sucesso!");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao adicionar status: " + e.getMessage());
+    } finally {
+        try {
+            if (pst != null) pst.close();
+            if (conexao != null) conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
+        }
+    }
+}
+
+
+    public void atualizarTabelaStatus(UsuarioDTO usuario) {
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(null, "Usuário não informado.");
+            return;
+        }
+        if (Filmes.tbFilmes == null) {
+            JOptionPane.showMessageDialog(null, "Tabela tbFilmes não inicializada.");
+            return;
+        }
+
+        String sql = "SELECT f.idFilme, f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao "
+                   + "FROM catalogo_filmes f "
+                   + "LEFT JOIN usuario_filme1 uf ON f.idFilme = uf.id_filme AND uf.id_usuario = ?";
+
+        try (Connection conexao = new ConexaoDAO().conector();
+             PreparedStatement pst = conexao.prepareStatement(sql)) {
+
             pst.setInt(1, usuario.getId_usuario());
+            ResultSet rs = pst.executeQuery();
 
+            DefaultTableModel model = (DefaultTableModel) Filmes.tbFilmes.getModel();
+            model.setRowCount(0);
+
+            while (rs.next()) {
+                int id = rs.getInt("idFilme");
+                String titulo = rs.getString("tituloFilme");
+                String genero = rs.getString("generoFilme");
+                String plataforma = rs.getString("plataforma");
+                int faixa = rs.getInt("faixaEtaria");
+                String status = rs.getString("status_visualizacao");
+                if (status == null) status = "Não visto";
+                model.addRow(new Object[]{id, titulo, genero, plataforma, faixa, status});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar tabela: " + e.getMessage());
+        }
+    }
+
+    public Integer buscarIdPorTitulo(String titulo) {
+        Integer idFilme = null;
+        String sql = "SELECT idFilme FROM catalogo_filmes WHERE tituloFilme = ?";
+
+        try (Connection conexao = new ConexaoDAO().conector();
+             PreparedStatement pst = conexao.prepareStatement(sql)) {
+
+                        pst.setString(1, titulo);
             try (ResultSet rs = pst.executeQuery()) {
-                DefaultTableModel model = (DefaultTableModel) Filmes.tbFilmes.getModel();
-                model.setRowCount(0); // Limpa a tabela
-
-                while (rs.next()) {
-                    int id = rs.getInt("idFilme");
-                    String titulo = rs.getString("tituloFilme");
-                    String genero = rs.getString("generoFilme");
-                    String plataforma = rs.getString("plataforma");
-                    int faixa = rs.getInt("faixaEtaria");
-                    String status = rs.getString("status_visualizacao");
-
-                    // Se status for null, pode exibir "Não visto"
-                    if (status == null) status = "Não visto";
-
-                    model.addRow(new Object[]{id, titulo, genero, plataforma, faixa, status});
+                if (rs.next()) {
+                    idFilme = rs.getInt("idFilme");
                 }
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar ID do filme: " + e.getMessage());
         }
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao atualizar tabela: " + e.getMessage());
-        e.printStackTrace();
+        return idFilme;
     }
-    
-    
-}
-   
-   public Integer buscarIdPorTitulo(String titulo) {
-    Integer idFilme = null;
-    String sql = "SELECT idFilme FROM catalogo_filmes WHERE tituloFilme = ?";
-
-    try (Connection conexao = new ConexaoDAO().conector();
-         PreparedStatement pst = conexao.prepareStatement(sql)) {
-
-        pst.setString(1, titulo);
-
-        try (ResultSet rs = pst.executeQuery()) {
-            if (rs.next()) {
-                idFilme = rs.getInt("idFilme");
-            }
-        }
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao buscar ID do filme: " + e.getMessage());
-        e.printStackTrace();
-    }
-
-    return idFilme;
-}
 
     public String buscarSinopsePorTitulo(String titulo) {
         String sinopse = null;
@@ -238,202 +229,142 @@ public class FilmeDAO {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, titulo);
             rs = pst.executeQuery();
-
             if (rs.next()) {
                 sinopse = rs.getString("sinopse");
             }
         } catch (Exception e) {
-
             System.out.println("Erro ao buscar sinopse: " + e.getMessage());
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (conexao != null) {
-                    conexao.close();
-                }
-            } catch (Exception e) {
-            }
+            fecharConexao();
         }
-
         return sinopse;
     }
 
-   public void listarFilmesAssistidos(UsuarioDTO objUsuarioDTO) {
-    String sql = "SELECT f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao " +
-                 "FROM usuario_filme1 uf " +  
-                 "JOIN Catalogo_Filmes f ON uf.id_filme = f.idFilme " +
-                 "WHERE uf.id_usuario = ? AND uf.status_visualizacao IN ('Assistido', 'Assistindo')";
+    public void listarFilmesAssistidos(UsuarioDTO objUsuarioDTO) {
+        String sql = "SELECT f.tituloFilme, f.generoFilme, f.plataforma, f.faixaEtaria, uf.status_visualizacao "
+                   + "FROM usuario_filme1 uf "
+                   + "JOIN catalogo_filmes f ON uf.id_filme = f.idFilme "
+                   + "WHERE uf.id_usuario = ? AND uf.status_visualizacao IN ('Assistido', 'Assistindo')";
+        conexao = ConexaoDAO.conector();
 
-    conexao = ConexaoDAO.conector();
-
-    try (PreparedStatement pst = conexao.prepareStatement(sql)) {
-        pst.setInt(1, objUsuarioDTO.getId_usuario());
-        ResultSet rs = pst.executeQuery();
-
-        DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-        model.setNumRows(0); 
-
-        while (rs.next()) {
-            String titulo = rs.getString("tituloFilme");
-            String genero = rs.getString("generoFilme");
-            String plataforma = rs.getString("plataforma");
-            int faixaEtaria = rs.getInt("faixaEtaria");
-            String status = rs.getString("status_visualizacao");
-
-            
-            model.addRow(new Object[]{titulo, genero, plataforma, faixaEtaria, status});
-            System.out.println("Filme: " + titulo + " - Status: " + status);
-        }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (conexao != null) {
-                conexao.close();
+        try (PreparedStatement pst = conexao.prepareStatement(sql)) {
+            pst.setInt(1, objUsuarioDTO.getId_usuario());
+            ResultSet rs = pst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
+            model.setNumRows(0);
+            while (rs.next()) {
+                String titulo = rs.getString("tituloFilme");
+                String genero = rs.getString("generoFilme");
+                String plataforma = rs.getString("plataforma");
+                int faixaEtaria = rs.getInt("faixaEtaria");
+                String status = rs.getString("status_visualizacao");
+                model.addRow(new Object[]{titulo, genero, plataforma, faixaEtaria, status});
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao listar filmes assistidos: " + e.getMessage());
+        } finally {
+            fecharConexao();
         }
     }
-}
 
-//     public void listar() {
-//        String sql = "SELECT tituloFilme FROM Catalogo_Filmes";
-//        conexao = ConexaoDAO.conector();
-//
-//        try {
-//            pst = conexao.prepareStatement(sql);
-//            rs = pst.executeQuery();
-//            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-//            model.setNumRows(0);
-//
-//            while (rs.next()) {
-//
-//                String Titulo = rs.getString("tituloFilme");
-//
-//                model.addRow(new Object[]{Titulo});
-//
-//            }
-//            conexao.close();
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Método Listar " + e.getMessage());
-//        }
-//
-//    }
-//     
-//   
- public void listarFilmesFiltrados(Catalogo c1) {
-    Object generoObj = c1.FiltroGenero.getSelectedItem();
-    Object faixaEtariaObj = c1.FiltroFaixaEtaria.getSelectedItem();
-    Object plataformaObj = c1.FiltroPlataforma.getSelectedItem();
+    public void listarFilmesFiltrados(Catalogo c1) {
+        Object generoObj = c1.FiltroGenero.getSelectedItem();
+        Object faixaEtariaObj = c1.FiltroFaixaEtaria.getSelectedItem();
+        Object plataformaObj = c1.FiltroPlataforma.getSelectedItem();
 
-    String genero = (generoObj != null) ? generoObj.toString().trim() : "Vazio";
-    String faixaEtaria = (faixaEtariaObj != null) ? faixaEtariaObj.toString().trim() : "Vazio";
-    String plataforma = (plataformaObj != null) ? plataformaObj.toString().trim() : "Vazio";
+        String genero = (generoObj != null) ? generoObj.toString().trim() : "Vazio";
+        String faixaEtaria = (faixaEtariaObj != null) ? faixaEtariaObj.toString().trim() : "Vazio";
+        String plataforma = (plataformaObj != null) ? plataformaObj.toString().trim() : "Vazio";
 
-    StringBuilder sql = new StringBuilder("SELECT tituloFilme, generoFilme, plataforma, faixaEtaria FROM Catalogo_Filmes WHERE 1=1");
-    List<String> parametros = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT tituloFilme, generoFilme, plataforma, faixaEtaria FROM catalogo_filmes WHERE 1=1");
+        List<String> parametros = new ArrayList<>();
 
-    if (!genero.equalsIgnoreCase("Vazio")) {
-        if (genero.equalsIgnoreCase("Outro")) {
-            List<String> generosConhecidos = c1.generos;
-            if (generosConhecidos != null && !generosConhecidos.isEmpty()) {
-                sql.append(" AND generoFilme NOT IN (");
-                for (int i = 0; i < generosConhecidos.size(); i++) {
-                    sql.append("?");
-                    if (i < generosConhecidos.size() - 1) {
-                        sql.append(", ");
+        if (!genero.equalsIgnoreCase("Vazio")) {
+            if (genero.equalsIgnoreCase("Outro")) {
+                List<String> generosConhecidos = c1.generos;
+                if (generosConhecidos != null && !generosConhecidos.isEmpty()) {
+                    sql.append(" AND generoFilme NOT IN (");
+                    for (int i = 0; i < generosConhecidos.size(); i++) {
+                        sql.append("?");
+                        if (i < generosConhecidos.size() - 1) sql.append(", ");
                     }
+                    sql.append(")");
+                    parametros.addAll(generosConhecidos);
                 }
-                sql.append(")");
-                parametros.addAll(generosConhecidos);
+            } else {
+                sql.append(" AND generoFilme = ?");
+                parametros.add(genero);
             }
-        } else {
-            sql.append(" AND generoFilme = ?");
-            parametros.add(genero);
         }
-    }
 
-    if (!faixaEtaria.equalsIgnoreCase("Vazio")) {
-        if (faixaEtaria.equalsIgnoreCase("Outro")) {
-            List<String> faixasConhecidas = c1.faixaEtaria;
-            if (faixasConhecidas != null && !faixasConhecidas.isEmpty()) {
-                sql.append(" AND faixaEtaria NOT IN (");
-                for (int i = 0; i < faixasConhecidas.size(); i++) {
-                    sql.append("?");
-                    if (i < faixasConhecidas.size() - 1) {
-                        sql.append(", ");
+        if (!faixaEtaria.equalsIgnoreCase("Vazio")) {
+            if (faixaEtaria.equalsIgnoreCase("Outro")) {
+                List<String> faixasConhecidas = c1.faixaEtaria;
+                if (faixasConhecidas != null && !faixasConhecidas.isEmpty()) {
+                    sql.append(" AND faixaEtaria NOT IN (");
+                    for (int i = 0; i < faixasConhecidas.size(); i++) {
+                        sql.append("?");
+                        if (i < faixasConhecidas.size() - 1) sql.append(", ");
                     }
+                    sql.append(")");
+                    parametros.addAll(faixasConhecidas);
                 }
-                sql.append(")");
-                parametros.addAll(faixasConhecidas);
+            } else {
+                sql.append(" AND faixaEtaria = ?");
+                parametros.add(faixaEtaria);
             }
-        } else {
-            sql.append(" AND faixaEtaria = ?");
-            parametros.add(faixaEtaria);
         }
-    }
 
-    if (!plataforma.equalsIgnoreCase("Vazio")) {
-        if (plataforma.equalsIgnoreCase("Outro")) {
-            List<String> plataformasConhecidas = c1.plataformas;
-            if (plataformasConhecidas != null && !plataformasConhecidas.isEmpty()) {
-                sql.append(" AND plataforma NOT IN (");
-                for (int i = 0; i < plataformasConhecidas.size(); i++) {
-                    sql.append("?");
-                    if (i < plataformasConhecidas.size() - 1) {
-                        sql.append(", ");
+        if (!plataforma.equalsIgnoreCase("Vazio")) {
+            if (plataforma.equalsIgnoreCase("Outro")) {
+                List<String> plataformasConhecidas = c1.plataformas;
+                if (plataformasConhecidas != null && !plataformasConhecidas.isEmpty()) {
+                    sql.append(" AND plataforma NOT IN (");
+                    for (int i = 0; i < plataformasConhecidas.size(); i++) {
+                        sql.append("?");
+                        if (i < plataformasConhecidas.size() - 1) sql.append(", ");
                     }
+                    sql.append(")");
+                    parametros.addAll(plataformasConhecidas);
                 }
-                sql.append(")");
-                parametros.addAll(plataformasConhecidas);
+            } else {
+                sql.append(" AND plataforma = ?");
+                parametros.add(plataforma);
             }
-        } else {
-            sql.append(" AND plataforma = ?");
-            parametros.add(plataforma);
-        }
-    }
-
-    conexao = ConexaoDAO.conector();
-
-    try {
-        pst = conexao.prepareStatement(sql.toString());
-
-        for (int i = 0; i < parametros.size(); i++) {
-            pst.setString(i + 1, parametros.get(i));
         }
 
-        rs = pst.executeQuery();
+        conexao = ConexaoDAO.conector();
 
-        DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
-        model.setNumRows(0);
-
-        while (rs.next()) {
-            String titulo = rs.getString("tituloFilme");
-            String generoResult = rs.getString("generoFilme");
-            String plataformaResult = rs.getString("plataforma");
-            String faixaEtariaResult = rs.getString("faixaEtaria");
-
-            model.addRow(new Object[]{titulo, generoResult, plataformaResult, faixaEtariaResult});
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Erro ao listar filmes com filtros: " + e.getMessage());
-    } finally {
         try {
-            if (conexao != null) {
-                conexao.close();
+            pst = conexao.prepareStatement(sql.toString());
+            for (int i = 0; i < parametros.size(); i++) {
+                pst.setString(i + 1, parametros.get(i));
             }
+            rs = pst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) Catalogo.TbFilmes.getModel();
+            model.setNumRows(0);
+
+            while (rs.next()) {
+                String titulo = rs.getString("tituloFilme");
+                String generoResult = rs.getString("generoFilme");
+                String plataformaResult = rs.getString("plataforma");
+                String faixaEtariaResult = rs.getString("faixaEtaria");
+                model.addRow(new Object[]{titulo, generoResult, plataformaResult, faixaEtariaResult});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar filmes com filtros: " + e.getMessage());
+        } finally {
+            fecharConexao();
+        }
+    }
+
+    private void fecharConexao() {
+        try {
+            if (rs != null) rs.close();
+            if (pst != null) pst.close();
+            if (conexao != null) conexao.close();
         } catch (Exception e) {
         }
     }
 }
-}
-
 
