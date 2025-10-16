@@ -19,17 +19,24 @@ public class UsuarioDAO {
     PreparedStatement pst = null;
     ResultSet rs = null;
 
-    public boolean logar(UsuarioDTO objusuarioDTO) {
-    String sql = "SELECT * FROM cadastro_usuarios WHERE nome = ? AND senha = ?";
+public boolean logar(UsuarioDTO objusuarioDTO) {
+    String sql = "SELECT idCadastro, nome, senha FROM cadastro_usuarios WHERE nome = ? AND senha = ?";
 
     try (Connection conexao = ConexaoDAO.conector();
          PreparedStatement pst = conexao.prepareStatement(sql)) {
 
-        pst.setString(1, objusuarioDTO.getLogin_usuario());
-        pst.setString(2, objusuarioDTO.getSenha_usuario());
+        pst.setString(1, objusuarioDTO.getLogin_usuario()); 
+        pst.setString(2, objusuarioDTO.getSenha_usuario()); 
         ResultSet rs = pst.executeQuery();
 
-        return rs.next(); 
+        if (rs.next()) {
+           
+            objusuarioDTO.setId_usuario(rs.getInt("idCadastro"));
+            objusuarioDTO.setNome_usuario(rs.getString("nome"));
+            return true;
+        } else {
+            return false;
+        }
 
     } catch (SQLException e) {
         e.printStackTrace();
@@ -37,15 +44,15 @@ public class UsuarioDAO {
     }
 }
 
+
 public CadastrarDTO getTipoUsuario(CadastrarDTO objCadastroDTO) {
     CadastrarDTO usuarioAutenticado = null;
 
-    // Verifica se é admin
     if ("admin".equals(objCadastroDTO.getNome()) && "123".equals(objCadastroDTO.getSenha())) {
         usuarioAutenticado = new CadastrarDTO();
         usuarioAutenticado.setNome("admin");
     } else {
-        // Login normal via banco
+      
         String sql = "SELECT idCadastro, nome, dataNascimento, senha, confirSenha "
                    + "FROM nome WHERE nome = ? AND senha = ?";
 
