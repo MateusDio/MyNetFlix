@@ -66,4 +66,11 @@ INSERT INTO usuario_filme1 (id_usuario, id_filme, status_visualizacao, nota_usua
 VALUES
 (1, 1, 'Assistido', 10),     -- João - Interestelar
 (1, 2, 'Assistindo', 8),     -- João - Matrix
-(2, 3, 'Assistido', 9);      -- Maria - O Poderoso Chefão
+(2, 3, 'Assistido', 9);      -- Maria - O Poderoso Chefão 
+
+Informações extras 
+User: root; Senha: root;
+
+Driver de uso: com.mysql.jdbc.Driver; Url de uso: jdbc:mysql://localhost:3306/RevisaoBanco;
+
+Tipo de banco: SGDB;
