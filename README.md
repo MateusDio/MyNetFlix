@@ -1,11 +1,17 @@
 # MyNetFlix
 
 
+
+
 Este projeto é um sistema desenvolvido em **Java** com integração ao banco de dados **MySQL**, com o objetivo de gerenciar filmes. O sistema permite ao usuário fazer cadastro, login (como usuário ou adm), adicionar filmes, ver catálogo, remover filmes, listar, avaliar filmes assistidos e etc. 
 ---
 
 
+
+
 ## 🚀 Funcionalidades
+
+
 
 
 - Cadastro de **usuários** com as opções de id, nome completo, data de nascimento, senha e confirmação de senha.
@@ -15,10 +21,16 @@ Este projeto é um sistema desenvolvido em **Java** com integração ao banco de
 - Classificação de filmes com opções de nota, status e sinopse.
 
 
+
+
 ---
 
 
+
+
 ## 🛠️ Tecnologias Utilizadas
+
+
 
 
 - **Java version 21.0.2**  
@@ -29,17 +41,29 @@ Este projeto é um sistema desenvolvido em **Java** com integração ao banco de
 
 
 
+
+
+
+
 ---
+
+
 
 
 ## 📂 Estrutura do Projeto
   src/
 
 
+
+
 ├── dao/ # Classes de acesso ao banco de dados
 
 
+
+
 ├── dto/ # Objetos de transferência de dados
+
+
 
 
 ├── img/ # Imagens dos ícones
@@ -48,34 +72,52 @@ Este projeto é um sistema desenvolvido em **Java** com integração ao banco de
 
 
 
+
+
+
+
 ---
+
+
 
 
 ## 📅 Histórico de Atualizações
 
 
-- **v1.0.0** – (22/09/2025)  
+
+
+- **v1.0.0** – (16/10/2025)  
   - Primeira versão estável.  
-  - Implementação de cadastro de máquinas e inventário.  
+  - Correção de erros.
 
 
-- **v0.3.0** – (15/09/2025)  
-  - Adição de relatórios básicos.  
-  - Ajustes na interface gráfica.  
+- **v0.3.0** – (1-15/10/2025)  
+  - Adição de métodos.  
+  - Correção de erros.  
 
 
-- **v0.2.0** – (08/09/2025)  
-  - Implementação do módulo de manutenção.  
 
 
-- **v0.1.0** – (29/09/2025)  
-  - Criação inícial do projeto (DAO, DTO e VIEW).
+- **v0.2.0** – (29/09/2025)  
+  - Criação base das páginas e métodos.  
+
+
+
+
+- **v0.1.0** – (22/09/2025)  
+  - Criação inicial do projeto (DAO, DTO e VIEW).
+
+
 
 
 ---
 
 
+
+
 ## 👨‍💻 Desenvolvedores
+
+
 
 
 Este projeto foi idealizado e desenvolvido por:  
@@ -83,10 +125,16 @@ Este projeto foi idealizado e desenvolvido por:
 ## Mateus Diolinda
 
 
+
+
 ---
 
 
+
+
 ## Informações sobre o Banco de Dados usado
+
+
 
 
 — User: root; Senha: root;
@@ -98,21 +146,35 @@ Tipo de banco: SGDB;
 
 
 
+
+
+
+
+
+
 ## 📜 Licença
+
+
 
 
 Este projeto está licenciado sob a licença **MIT** – veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 
+
+
 ---
 
 
+
+
 **Script banco**
+
 
 -- CRIAR O BANCO
 DROP DATABASE IF EXISTS FilmesBanco;
 CREATE DATABASE FilmesBanco;
 USE FilmesBanco;
+
 
 -- TABELA DE FILMES
 CREATE TABLE catalogo_Filmes(
@@ -126,6 +188,8 @@ CREATE TABLE catalogo_Filmes(
 );
 
 
+
+
 CREATE TABLE tb_usuario(
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nome_usuario VARCHAR(50) NOT NULL,
@@ -133,7 +197,10 @@ CREATE TABLE tb_usuario(
     Senha VARCHAR(50) NOT NULL
 );
 
+
 select * from tb_usuario;
+
+
 
 
 CREATE TABLE usuario_filme1 (
@@ -147,6 +214,8 @@ CREATE TABLE usuario_filme1 (
 );
 
 
+
+
 create table cadastro_usuarios( 
 idCadastro int primary key not null, 
 nome varchar(50) not null unique, 
@@ -154,13 +223,17 @@ senha varchar(10) not null
 );
 
 
+
+
 SELECT * FROM login WHERE login = 'Admin' AND senha = '1234';
+
 
 INSERT INTO Catalogo_Filmes(tituloFilme, generoFilme, plataforma, faixaEtaria, sinopse, nota)
 VALUES 
 ("Interestelahr", "Ficção Científica", "Disney+", 12, "Exploradores viajam por um buraco de minhoca para salvar a humanidade.", 9),
 ("Matrixk", "Ação", "HBO Max", 16, "Um hacker descobre que o mundo é uma simulação.", 10),
 ("O Poderosjo Chefão", "Drama", "Netflix", 18, "Saga da família mafiosa Corleone.", 10);
+
 
 -- USUÁRIOS (2)
 INSERT INTO tb_Usuario(nome_usuario, Login, Senha)
@@ -169,6 +242,7 @@ VALUES
 ("Maria Souza", "maria123", "abcdef"),
 ("Rafaela", "admin", "123");
 
+
 -- RELACIONAMENTOS (usuario_filme1)
 -- João assistiu 2 filmes, Maria assistiu 1
 INSERT INTO usuario_filme1 (id_usuario, id_filme, status_visualizacao, nota_usuario)
@@ -176,5 +250,10 @@ VALUES
 (1, 1, 'Assistido', 10),     -- João - Interestelar
 (1, 2, 'Assistindo', 8),     -- João - Matrix
 (2, 3, 'Assistido', 9);      -- Maria - O Poderoso Chefão 
+
+
+
+
+
 
 
