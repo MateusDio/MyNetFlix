@@ -68,8 +68,8 @@ Este projeto é um sistema desenvolvido em **Java** com integração ao banco de
   - Implementação do módulo de manutenção.  
 
 
-- **v0.1.0** – (01/09/2025)  
-  - Estrutura inicial do projeto criada (DAO, DTO, VIEW).  
+- **v0.1.0** – (29/09/2025)  
+  - Criação inícial do projeto (DAO, DTO e VIEW).
 
 
 ---
