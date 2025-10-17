@@ -224,7 +224,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuAdcFilmesMousePressed
 
     private void subMenuAdcUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcUsuActionPerformed
-        // TODO add your handling code here:
+        Cadastrar c1 = new Cadastrar();
+        Desktop.add(c1);
+        c1.setVisible(true);
     }//GEN-LAST:event_subMenuAdcUsuActionPerformed
 
     private void subMenuAdcUsuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuAdcUsuMouseClicked
@@ -242,6 +244,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     if (!aberto) {
         Desktop.add(c1);
         c1.setVisible(true);
+        System.out.println("ola");
     }
     }//GEN-LAST:event_subMenuAdcUsuMouseClicked
 

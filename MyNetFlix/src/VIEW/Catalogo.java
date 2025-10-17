@@ -30,7 +30,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
         initComponents();
         this.usuarioLogado = usuario;
 
-        f1.atualizarTabelaStatus(usuarioLogado);
+      
         generos = Arrays.asList(
                 "Vazio", "Ação", "Aventura", "Animação", "Comédia", "Comédia Romântica", "Crime", "Documentário",
                 "Drama", "Ficção Científica", "Fantasia", "Guerra", "Mistério", "Musical", "Policial",
@@ -63,7 +63,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
         for (String plataforma : plataformas) {
             FiltroPlataforma.addItem(plataforma);
         }
-
+  f1.atualizarTabelaStatus(usuarioLogado);
     }
 
     @SuppressWarnings("unchecked")

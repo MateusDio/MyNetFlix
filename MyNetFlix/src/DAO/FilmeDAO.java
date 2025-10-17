@@ -158,7 +158,7 @@ public class FilmeDAO {
             return;
         }
         if (Filmes.tbFilmes == null) {
-            JOptionPane.showMessageDialog(null, "Tabela tbFilmes não inicializada.");
+
             return;
         }
 

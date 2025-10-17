@@ -266,17 +266,17 @@ public class Filmes extends javax.swing.JFrame {
         DTOedit.setTitulo_Filme(titulo);
         DTOedit.setGenero_Filme(genero);
         DTOedit.setPlataforma_filme(plataforma);
-      
+
         DTOedit.setFaixaEtaria(extrair(faixaEtaria));
         String sinopse = txtSinopse.getText();
         DTOedit.setSinopse_filme(sinopse);
-        
+
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.add(DTOedit);
     }//GEN-LAST:event_btnAddMousePressed
 
     private void btnListarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnListarMousePressed
-            f1.pesquisaAuto();
+        f1.pesquisaAuto();
     }//GEN-LAST:event_btnListarMousePressed
 
     private void btnRemoverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRemoverMousePressed
@@ -285,7 +285,15 @@ public class Filmes extends javax.swing.JFrame {
         DTOedit.setTitulo_Filme(txtTitulo.getText());
         DTOedit.setGenero_Filme(txtGenero.getText());
         DTOedit.setPlataforma_filme(txtPlataforma.getText());
-        DTOedit.setFaixaEtaria(Integer.parseInt(cboFaixaEtaria.getSelectedItem().toString()));
+        String faixaSelecionada = cboFaixaEtaria.getSelectedItem().toString();
+
+        if (faixaSelecionada.equalsIgnoreCase("Livre")) {
+            DTOedit.setFaixaEtaria(0); // ou o valor que você quiser pra "Livre"
+        } else {
+            // remove tudo que não for número e converte
+            int faixa = Integer.parseInt(faixaSelecionada.replaceAll("[^0-9]", ""));
+            DTOedit.setFaixaEtaria(faixa);
+        }
 
         FilmeDAO DAOedit = new FilmeDAO();
         DAOedit.deletar(DTOedit);

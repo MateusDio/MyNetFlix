@@ -32,7 +32,6 @@ public class Cadastrar extends javax.swing.JInternalFrame {
         setClosable(true);   // Permite fechar
         setIconifiable(true); // Minimizar
         setResizable(true);  // Redimensionar
-        setSize(400, 300);   // Tamanho inicial
         setVisible(true);
         conexao = ConexaoDAO.conector();
         System.out.println(conexao);

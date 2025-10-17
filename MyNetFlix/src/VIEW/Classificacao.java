@@ -26,7 +26,7 @@ public class Classificacao extends javax.swing.JFrame {
     private FilmeDAO f1 = new FilmeDAO();
 
     public Classificacao(UsuarioDTO usuario, FilmeDTO filme) {
-          initComponents();
+        initComponents();
 
         this.usuarioLogado = usuario;
         this.filmeSelecionado = filme;
@@ -237,27 +237,27 @@ public class Classificacao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-    if (cboStatus.getSelectedItem() == null) {
-        JOptionPane.showMessageDialog(this, "Selecione um status!");
-        return;
-    }
+        if (cboStatus.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um status!");
+            return;
+        }
 
-    String statusSelecionado = cboStatus.getSelectedItem().toString();
+        String statusSelecionado = cboStatus.getSelectedItem().toString();
 
-    try {
-        System.out.println("ID Usuario: " + usuarioLogado.getId_usuario());
-System.out.println("ID Filme: " + filmeSelecionado.getId_Filme());
-        System.out.println("Tentando salvar status: " + statusSelecionado + " | filme: " + filmeSelecionado.getId_Filme());
-        f1.addStatus(usuarioLogado.getId_usuario(), filmeSelecionado.getId_Filme(), statusSelecionado);
-        JOptionPane.showMessageDialog(this, "Status salvo com sucesso!");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao salvar status: " + e.getMessage());
-        e.printStackTrace();
-    }
+        try {
+            System.out.println("ID Usuario: " + usuarioLogado.getId_usuario());
+            System.out.println("ID Filme: " + filmeSelecionado.getId_Filme());
+            System.out.println("Tentando salvar status: " + statusSelecionado + " | filme: " + filmeSelecionado.getId_Filme());
+            f1.addStatus(usuarioLogado.getId_usuario(), filmeSelecionado.getId_Filme(), statusSelecionado);
+            JOptionPane.showMessageDialog(this, "Status salvo com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar status: " + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void TbFilmesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbFilmesMouseClicked
-      
+
 
     }//GEN-LAST:event_TbFilmesMouseClicked
 
@@ -300,7 +300,7 @@ System.out.println("ID Filme: " + filmeSelecionado.getId_Filme());
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                        // Para teste: cria usuário e filme fictícios
+                // Para teste: cria usuário e filme fictícios
                 UsuarioDTO usuarioTeste = new UsuarioDTO();
                 usuarioTeste.setId_usuario(1);
                 usuarioTeste.setNome_usuario("João");
