@@ -245,20 +245,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuAdcFilmesMousePressed
 
     private void subMenuAdcUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcUsuActionPerformed
-        for (JInternalFrame frame : Desktop.getAllFrames()) {
-            frame.dispose();
-        }
-
-        Cadastrar c1 = new Cadastrar();
-        c1.setVisible(true);
-        Desktop.add(c1);
-        try {
-            c1.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Cadastrar funcionando");
+      Cadastrar c1 = new Cadastrar ();
+      c1.setVisible(true);
 
     }//GEN-LAST:event_subMenuAdcUsuActionPerformed
 

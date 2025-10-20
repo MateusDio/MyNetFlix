@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aluno.saolucas
  */
-public class Cadastrar extends javax.swing.JInternalFrame {
+public class Cadastrar extends javax.swing.JFrame {
 
     CadastrarDAO c1 = new CadastrarDAO();
     CadastrarDTO c2 = new CadastrarDTO();
@@ -28,10 +28,7 @@ public class Cadastrar extends javax.swing.JInternalFrame {
 
     public Cadastrar() {
         initComponents();
-        initComponents();
-        setClosable(true);   // Permite fechar
-        setIconifiable(true); // Minimizar
-        setResizable(true);  // Redimensionar
+        setResizable(true);  
         setVisible(true);
         conexao = ConexaoDAO.conector();
         System.out.println(conexao);
@@ -232,15 +229,43 @@ public class Cadastrar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNomeCadastroActionPerformed
 
     private void btnCadastrarUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarUsuActionPerformed
-        CadastrarDTO DTOedit = new CadastrarDTO();
-        DTOedit.setIdCadastro(Integer.parseInt(txtIdCadastro.getText()));
-        DTOedit.setNome(txtNomeCadastro.getText());
-        DTOedit.setDataNascimento(txtDataCadastro.getText());
-        DTOedit.setSenha(txtSenha.getText());
-        DTOedit.setConfirSenha(txtConfirSenha.getText());
+         System.out.println("ID digitado: [" + txtIdCadastro.getText() + "]");
+          System.out.println("ID digitado: [" + txtDataCadastro.getText() + "]");
+            System.out.println("ID digitado: [" + txtNomeCadastro.getText() + "]");
+              System.out.println("ID digitado: [" + txtSenha.getText() + "]");
+        
+        String idTexto = txtIdCadastro.getText();
+        System.out.println("");
+    if (idTexto.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "O campo ID Cadastro está vazio. Por favor, preencha com um número.");
+        return;
+        
+    }
+System.out.println("a");
+    CadastrarDTO DTOedit = new CadastrarDTO();
+System.out.println("b");
+    try {
+        DTOedit.setIdCadastro(Integer.parseInt(idTexto));
+        System.out.println("c");
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "ID Cadastro deve ser um número inteiro válido.");
+        System.out.println("g");
+        return;
+    }
 
-        CadastrarDAO DAOedit = new CadastrarDAO();
-        DAOedit.cadastrar(DTOedit);
+    DTOedit.setNome(txtNomeCadastro.getText());
+      System.out.println("jj");
+    DTOedit.setDataNascimento(txtDataCadastro.getText());
+    System.out.println("jjkk");
+    DTOedit.setSenha(txtSenha.getText());
+    System.out.println("jjkk2");
+   DTOedit.setConfirSenha(txtConfirSenha.getText());
+    System.out.println("jjkk277");
+
+    CadastrarDAO DAOedit = new CadastrarDAO();
+    System.out.println("jjkk27799");
+    DAOedit.cadastrar(DTOedit);
+     System.out.println("jjkk2779999");
 
     }//GEN-LAST:event_btnCadastrarUsuActionPerformed
 
