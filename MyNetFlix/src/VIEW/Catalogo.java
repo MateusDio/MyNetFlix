@@ -194,7 +194,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +219,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
                         .addComponent(FiltroPlataforma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(49, 49, 49)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         pack();
@@ -230,7 +230,7 @@ public class Catalogo extends javax.swing.JInternalFrame {
         FiltroPlataforma.setSelectedItem("Vazio");
         FiltroFaixaEtaria.setSelectedItem("Vazio");
         FiltroGenero.setSelectedItem("Vazio");
-        f1.listarFilmesAssistidos(u1);
+        f1.listarFilmesAssistidos(usuarioLogado);
 
     }//GEN-LAST:event_HistoricoMouseClicked
 

@@ -245,13 +245,28 @@ public class Classificacao extends javax.swing.JFrame {
         String statusSelecionado = cboStatus.getSelectedItem().toString();
 
         try {
+            // Verificações de segurança
+            if (usuarioLogado == null) {
+                JOptionPane.showMessageDialog(this, "Usuário não está logado!");
+                return;
+            }
+
+            if (filmeSelecionado == null) {
+                JOptionPane.showMessageDialog(this, "Nenhum filme selecionado!");
+                return;
+            }
+
+            // Impressão dos dados
             System.out.println("ID Usuario: " + usuarioLogado.getId_usuario());
             System.out.println("ID Filme: " + filmeSelecionado.getId_Filme());
             System.out.println("Tentando salvar status: " + statusSelecionado + " | filme: " + filmeSelecionado.getId_Filme());
+
+            // Chamada para salvar no banco
             f1.addStatus(usuarioLogado.getId_usuario(), filmeSelecionado.getId_Filme(), statusSelecionado);
+            System.out.println("Status salvo no banco: " + statusSelecionado);
             JOptionPane.showMessageDialog(this, "Status salvo com sucesso!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar status: " + e.getMessage());
+            System.out.println("Erro ao salvar status: " + e.getMessage());
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed

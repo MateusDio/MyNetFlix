@@ -151,18 +151,14 @@ if (loginValido) {
     CadastrarDTO usuarioLogado = new CadastrarDTO();
     usuarioLogado.setNome(usuarioDTO.getLogin_usuario());
     usuarioLogado.setSenha(usuarioDTO.getSenha_usuario());
-    // Se tiver outros campos, preencha também
+    
+    // ✅ ESSENCIAL: copie o ID do usuário logado!
+    usuarioLogado.setIdCadastro(usuarioDTO.getId_usuario());
 
     // Abre TelaPrincipal com o usuário logado
     TelaPrincipal telaCatalogo = new TelaPrincipal(usuarioLogado);
     telaCatalogo.setVisible(true);
     this.dispose(); // Fecha a tela de login
-
-} else {
-    JOptionPane.showMessageDialog(null, 
-            "Nome ou senha incorretos!", 
-            "Erro de login", 
-            JOptionPane.ERROR_MESSAGE);
 }
 
 

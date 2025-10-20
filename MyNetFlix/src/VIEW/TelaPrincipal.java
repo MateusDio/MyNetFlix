@@ -8,6 +8,7 @@ package VIEW;
 import DTO.CadastrarDTO;
 import DTO.UsuarioDTO;
 import java.awt.Color;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
@@ -21,14 +22,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     public TelaPrincipal(CadastrarDTO usuario) {
         initComponents();
-       
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId_usuario(usuario.getIdCadastro()); // Certifique-se de que getId() existe
         usuarioDTO.setNome_usuario(usuario.getNome());
         this.usuarioLogado = usuarioDTO;
 
-        txtBnv.setText("Bem-vindo, " + usuarioLogado.getNome_usuario()+ "!");
+        txtBnv.setText("Bem-vindo, " + usuarioLogado.getNome_usuario() + "!");
 
         if ("admin".equals(usuarioLogado.getNome_usuario())) {
             ativarFuncoesAdmin();
@@ -39,10 +39,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void ativarFuncoesAdmin() {
- 
+
         subMenuAdcFilmes.setEnabled(true);
         subMenuAdcUsu.setEnabled(true);
-        
+
     }
 
     private void ativarFuncoesUsuario() {
@@ -71,17 +71,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.GroupLayout DesktopLayout = new javax.swing.GroupLayout(Desktop);
         Desktop.setLayout(DesktopLayout);
         DesktopLayout.setHorizontalGroup(
             DesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 562, Short.MAX_VALUE)
+            .addGap(0, 560, Short.MAX_VALUE)
         );
         DesktopLayout.setVerticalGroup(
             DesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 459, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -156,21 +156,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(Desktop)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(228, 228, 228)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtBnv)
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(txtBnv))
+                .addGap(222, 222, 222))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBnv)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(Desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Desktop)
                 .addContainerGap())
         );
 
@@ -207,45 +207,63 @@ public class TelaPrincipal extends javax.swing.JFrame {
             return;
         }
 
+        for (JInternalFrame frame : Desktop.getAllFrames()) {
+            frame.dispose();
+        }
+
         Catalogo cata = new Catalogo(usuarioLogado);
         cata.setVisible(true);
         Desktop.add(cata);
-        System.out.println("Catalogo Funcionando");
+        try {
+            cata.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Catálogo funcionando");
     }//GEN-LAST:event_subMenuCatálogoMousePressed
 
     private void subMenuAdcFilmesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcFilmesActionPerformed
-        // TODO add your handling code here:
+        for (JInternalFrame frame : Desktop.getAllFrames()) {
+            frame.dispose();
+        }
+
+        Filmes f1 = new Filmes();
+        f1.setVisible(true);
+        Desktop.add(f1);
+        try {
+            f1.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Filmes funcionando");
     }//GEN-LAST:event_subMenuAdcFilmesActionPerformed
 
     private void subMenuAdcFilmesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuAdcFilmesMousePressed
-        Filmes f1 = new Filmes();
-        f1.setVisible(true);   
-        System.out.println("Filme funcionando");
+
     }//GEN-LAST:event_subMenuAdcFilmesMousePressed
 
     private void subMenuAdcUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAdcUsuActionPerformed
+        for (JInternalFrame frame : Desktop.getAllFrames()) {
+            frame.dispose();
+        }
+
         Cadastrar c1 = new Cadastrar();
-        Desktop.add(c1);
         c1.setVisible(true);
+        Desktop.add(c1);
+        try {
+            c1.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Cadastrar funcionando");
+
     }//GEN-LAST:event_subMenuAdcUsuActionPerformed
 
     private void subMenuAdcUsuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subMenuAdcUsuMouseClicked
-          Cadastrar c1 = new Cadastrar();
-    
-    // Evita adicionar múltiplas instâncias
-    boolean aberto = false;
-    for (javax.swing.JInternalFrame frame : Desktop.getAllFrames()) {
-        if (frame instanceof Cadastrar) {
-            aberto = true;
-            frame.toFront(); // traz para frente
-            break;
-        }
-    }
-    if (!aberto) {
-        Desktop.add(c1);
-        c1.setVisible(true);
-        System.out.println("ola");
-    }
+
     }//GEN-LAST:event_subMenuAdcUsuMouseClicked
 
     /**
