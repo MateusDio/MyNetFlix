@@ -3,7 +3,7 @@
 
 
 
-Este projeto é um sistema desenvolvido em **Java** com integração ao banco de dados **MySQL**, com o objetivo de gerenciar filmes. O sistema permite ao usuário fazer cadastro, login (como usuário ou adm), adicionar filmes, ver catálogo, remover filmes, listar, avaliar filmes assistidos e etc. 
+Este projeto é um sistema desenvolvido em **Java** com integração ao banco de dados **MySQL**, com o objetivo de gerenciar filmes. O sistema permite ao usuário fazer cadastro, login (como usuário ou adm), adicionar filmes, ver catálogo, remover filmes, listar,  filmes assistidos e etc. 
 ---
 
 
@@ -17,8 +17,8 @@ Este projeto é um sistema desenvolvido em **Java** com integração ao banco de
 - Cadastro de **usuários** com as opções de id, nome completo, data de nascimento, senha e confirmação de senha.
 - Login, com o cadastro salvo no banco de dados.
 - Registro de filmes, com opções de faixa etária, gênero e plataforma.
-- Visualização do catálogo para avaliação de filmes.
-- Classificação de filmes com opções de nota, status e sinopse.
+- Visualização do catálogo para mudar status do filme.
+- Classificação de filmes com opções de status e sinopse.
 
 
 
